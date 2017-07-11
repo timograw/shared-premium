@@ -1,0 +1,6 @@
+{
+  "name": "shared-premium",
+  "short_name": "shared-premium",
+  "start_url": "/",
+  "display": "standalone"
+}

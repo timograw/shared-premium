@@ -1,13 +1,114 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<link rel="import" href="../../bower_components/font-roboto/roboto.html">
+
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+  <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <dom-module id="shared-premium-app">
   <template>
     <style>
-      :host {
-        display: block;
+       :host {
+
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+
+
+  <custom-style>
+    <style is="custom-style">
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      background-color: #eee;
+    }
+
+    app-header {
+      background-color: #4285f4;
+      color: #fff;
+    }
+
+    app-header paper-icon-button {
+      --paper-icon-button-ink-color: #fff;
+    }
+
+    app-drawer-layout {
+      --app-drawer-layout-content-transition: margin 0.2s;
+    }
+
+    app-drawer {
+      --app-drawer-content-container: {
+        background-color: #eee;
+      }
+    }
+
+    .drawer-content {
+      margin-top: 80px;
+      height: calc(100% - 80px);
+      overflow: auto;
+    }
+
+    </style>
+  </custom-style>
+
+    <app-header-layout>
+
+      <app-header fixed effects="waterfall" slot="header">
+        <app-toolbar>
+          <paper-icon-button id="toggle" icon="menu"></paper-icon-button>
+          <div main-title>Shared Premium</div>
+        </app-toolbar>
+      </app-header>
+
+      <app-drawer-layout id="drawerLayout">
+
+        <app-drawer slot="drawer">
+          <div class="drawer-content">
+            <paper-icon-item>
+              <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Inbox</span>
+            </paper-icon-item>
+            <paper-icon-item>
+              <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Snoozed</span>
+            </paper-icon-item>
+            <paper-icon-item>
+              <iron-icon icon="done" slot="item-icon"></iron-icon> <span>Done</span>
+            </paper-icon-item>
+            <paper-icon-item>
+              <iron-icon icon="drafts" slot="item-icon"></iron-icon> <span>Drafts</span>
+            </paper-icon-item>
+            <paper-icon-item>
+              <iron-icon icon="send" slot="item-icon"></iron-icon> <span>Sent</span>
+            </paper-icon-item>
+            <paper-icon-item>
+              <iron-icon icon="delete" slot="item-icon"></iron-icon> <span>Trash</span>
+            </paper-icon-item>
+            <paper-icon-item>
+              <iron-icon icon="report" slot="item-icon"></iron-icon> <span>Spam</span>
+            </paper-icon-item>
+          </div>
+        </app-drawer>
+
+        <sample-content size="100"></sample-content>
+
+      </app-drawer-layout>
+
+    </app-header-layout>
+
+    <script>
+
+      </script>
+
   </template>
 
   <script>
@@ -28,5 +129,14 @@
     }
 
     window.customElements.define(SharedPremiumApp.is, SharedPremiumApp);
+
+        //     var drawerLayout = document.getElementById('drawerLayout');
+        // toggle.addEventListener('click', function() {
+        //   if (drawerLayout.forceNarrow || !drawerLayout.narrow) {
+        //     drawerLayout.forceNarrow = !drawerLayout.forceNarrow;
+        //   } else {
+        //     drawerLayout.drawer.toggle();
+        //   }
+        // });
   </script>
 </dom-module>

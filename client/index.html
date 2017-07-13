@@ -11,18 +11,10 @@
   <!-- See https://goo.gl/OOhYW5 -->
   <link rel="manifest" href="/manifest.json">
 
-  <!-- <script>
-    if ('registerElement' in document
-      && 'createShadowRoot' in HTMLElement.prototype
-      && 'import' in document.createElement('link')
-      && 'content' in document.createElement('template')) {
-    } else {
-      document.write('<script src="/bower_components/webcomponentsjs/webcomponents-loader.js"><\/script>');
-    }
-  </script> -->
   <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
   <link rel="import" href="/bower_components/font-roboto/roboto.html">
+
   <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
   <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
   <link rel="import" href="/bower_components/iron-icons/social-icons.html">
@@ -43,40 +35,14 @@
   <link rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html">
   <link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
 
+  <link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+  <link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
+  <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
+  <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+
   <!-- <link rel="import" href="/src/shared-premium-app/shared-premium-app.html"> -->
   <custom-style>
     <style is="custom-style">
-      /* body {
-        margin: 0;
-        font-family: 'Roboto', 'Noto', sans-serif;
-        background-color: #eee;
-      }
-
-      app-header {
-        background-color: #4285f4;
-        color: #fff;
-      }
-
-      app-header paper-icon-button {
-        --paper-icon-button-ink-color: #fff;
-      }
-
-      app-drawer-layout {
-        --app-drawer-layout-content-transition: margin 0.2s;
-      }
-
-      app-drawer {
-        --app-drawer-content-container: {
-          background-color: #eee;
-        }
-      }
-
-      .drawer-content {
-        margin-top: 80px;
-        height: calc(100% - 80px);
-        overflow: auto;
-      } */
-
       body {
         margin: 0;
         font-family: 'Roboto', 'Noto', sans-serif;
@@ -86,6 +52,11 @@
       app-header {
         background-color: #FF6F00;
         color: #fff;
+      }
+
+      app-header.whiteHeader {
+        background-color: #fff;
+        color: #FF6F00;
       }
 
       app-header paper-icon-button {
@@ -122,11 +93,9 @@
       }
 
       @keyframes cloudy {
-        /* 0% {transform:  rotate(-5deg);} */
         50% {
           transform: translateY(-3px);
         }
-        /* 100% {transform: rotate(-5deg);} */
       }
 
       @keyframes cloudy_shadow {
@@ -144,30 +113,35 @@
       }
 
       .top {
-        /*position: absolute;*/
+        /* position: absolute; */
         fill: #fff;
         transform: scale(0.75);
-        margin-right: 15px;
+        margin-right: 20px;
       }
     </style>
   </custom-style>
+
+
 </head>
 
 <body unresolved>
 
-
   <app-drawer-layout>
 
     <app-drawer slot="drawer">
-      <app-toolbar>
+
+      <app-header-layout has-scrolling-region>
+        <app-header class="whiteHeader" waterfall fixed slot="header">
+          <app-toolbar>
         <div class="cloudy">
           <iron-icon icon="cloud" class="behind"></iron-icon>
           <iron-icon icon="social:share" class="top"></iron-icon>
         </div>
-        Shared Premium
-      </app-toolbar>
+        <div main-title>Shared Premium</div>
+          </app-toolbar>
+        </app-header>
 
-      <!-- <div class="drawer-content">
+
         <a is="pushstate-anchor" href="/">
           <paper-icon-item>
             <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Download</span>
@@ -178,6 +152,12 @@
             <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Test</span>
           </paper-icon-item>
         </a>
+      </app-header-layout>
+
+
+
+      <!-- <div class="drawer-content">
+
       </div> -->
     </app-drawer>
 

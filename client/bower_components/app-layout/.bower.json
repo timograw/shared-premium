@@ -73,6 +73,5 @@
   },
   "_source": "https://github.com/PolymerElements/app-layout.git",
   "_target": "^2.0.1",
-  "_originalSource": "app-layout",
-  "_direct": true
+  "_originalSource": "app-layout"
 }

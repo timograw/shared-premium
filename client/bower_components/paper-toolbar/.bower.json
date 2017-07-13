@@ -69,6 +69,5 @@
   },
   "_source": "https://github.com/PolymerElements/paper-toolbar.git",
   "_target": "^2.0.0",
-  "_originalSource": "paper-toolbar",
-  "_direct": true
+  "_originalSource": "paper-toolbar"
 }

@@ -40,6 +40,8 @@
   <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
   <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
 
+  <link rel="import" href="/elements/shared-premium-logo/shared-premium-logo.html">
+
   <!-- <link rel="import" href="/src/shared-premium-app/shared-premium-app.html"> -->
   <custom-style>
     <style is="custom-style">
@@ -74,50 +76,6 @@
         --paper-progress-container-color: transparent;
       }
 
-      .cloudy {
-        animation: cloudy 5s ease-in-out infinite;
-      }
-
-      .cloudy:after {
-        animation: cloudy_shadow 5s ease-in-out infinite;
-        background: #000000;
-        border-radius: 50%;
-        content: '';
-        height: 5px;
-        width: 20px;
-        opacity: 0.2;
-        position: absolute;
-        left: 2px;
-        bottom: -10px;
-        transform: scale(1);
-      }
-
-      @keyframes cloudy {
-        50% {
-          transform: translateY(-3px);
-        }
-      }
-
-      @keyframes cloudy_shadow {
-        50% {
-          transform: translateY(5px) scale(.7);
-          opacity: .05;
-        }
-      }
-
-      .behind {
-        fill: #FF6F00;
-        position: absolute;
-        z-index: -1;
-        transform: scale(1.75);
-      }
-
-      .top {
-        /* position: absolute; */
-        fill: #fff;
-        transform: scale(0.75);
-        margin-right: 20px;
-      }
     </style>
   </custom-style>
 
@@ -133,11 +91,8 @@
       <app-header-layout has-scrolling-region>
         <app-header class="whiteHeader" waterfall fixed slot="header">
           <app-toolbar>
-        <div class="cloudy">
-          <iron-icon icon="cloud" class="behind"></iron-icon>
-          <iron-icon icon="social:share" class="top"></iron-icon>
-        </div>
-        <div main-title>Shared Premium</div>
+            <shared-premium-logo></shared-premium-logo>
+            <div main-title>Shared Premium</div>
           </app-toolbar>
         </app-header>
 

@@ -1,0 +1,81 @@
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../shared-premium-logo/shared-premium-logo.html">
+
+<dom-module id="shared-premium-page-download">
+  <template>
+
+    <style>
+      .container {
+        height: 192px;
+        width: 192px;
+      }
+
+      .cloudy {
+        position: relative;
+        animation: cloudy 5s ease-in-out infinite;
+        left: -5px;
+      }
+
+      .cloudy:after {
+        animation: cloudy_shadow 5s ease-in-out infinite;
+        background: #000000;
+        border-radius: 50%;
+        content: '';
+        height: 20px;
+        width: 80px;
+        opacity: 0.1;
+        position: absolute;
+        left: 45px;
+        bottom: -85px;
+        transform: scale(0.8);
+      }
+
+      .behind {
+        fill: #FF6F00;
+        position: absolute;
+        /* transform: scale(1.75); */
+        --iron-icon-width: 168px;
+        --iron-icon-height: 168px;
+      }
+
+      .top {
+        /* position: absolute;  */
+        fill: #fff;
+        /* margin-right: 20px; */
+        --iron-icon-width: 88px;
+        --iron-icon-height: 88px;
+        left: 36px;
+        top: 45px;
+      }
+    </style>
+
+    <h1>Download</h1>
+
+    <paper-card heading="Usage" class="usage">
+      <div class="card-content">
+
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class SharedPremiumPageDownload extends Polymer.Element {
+      static get is() { return 'shared-premium-page-download'; }
+      static get properties() {
+        return {
+        };
+      }
+    }
+
+    window.customElements.define(SharedPremiumPageDownload.is, SharedPremiumPageDownload);
+  </script>
+
+</dom-module>

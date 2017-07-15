@@ -15,34 +15,8 @@
 
   <link rel="import" href="/bower_components/font-roboto/roboto.html">
 
-  <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
-  <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
-  <link rel="import" href="/bower_components/iron-icons/social-icons.html">
-
-  <!-- <link rel="import" href="/bower_components/paper-menu/paper-menu.html"> -->
-  <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
-  <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
-  <link rel="import" href="/bower_components/paper-progress/paper-progress.html">
-
-  <link rel="import" href="/bower_components/app-router/app-router.html">
-
-  <link rel="import" href="/bower_components/pushstate-anchor/pushstate-anchor.html">
-
-  <link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-  <link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
-  <link rel="import" href="/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-  <link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
-  <link rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html">
-  <link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
-
-  <link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-  <link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
-  <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
-  <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
-
-  <link rel="import" href="/elements/shared-premium-logo/shared-premium-logo.html">
-
-  <!-- <link rel="import" href="/src/shared-premium-app/shared-premium-app.html"> -->
+  <link rel="import" href="/elements/shared-premium-app/shared-premium-app.html">
+  
   <custom-style>
     <style is="custom-style">
       body {
@@ -50,106 +24,14 @@
         font-family: 'Roboto', 'Noto', sans-serif;
         background-color: #eee;
       }
-
-      app-header {
-        background-color: #FF6F00;
-        color: #fff;
-      }
-
-      app-header.whiteHeader {
-        background-color: #fff;
-        color: #FF6F00;
-      }
-
-      app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
-      }
-
-      app-drawer-layout:not([narrow]) [drawer-toggle] {
-        display: none;
-      }
-
-      paper-progress {
-        display: block;
-        width: 100%;
-        --paper-progress-active-color: rgba(255, 255, 255, 0.5);
-        --paper-progress-container-color: transparent;
-      }
-
+    
     </style>
   </custom-style>
-
-
 </head>
 
 <body unresolved>
 
-  <app-drawer-layout>
-
-    <app-drawer slot="drawer">
-
-      <app-header-layout has-scrolling-region>
-        <app-header class="whiteHeader" waterfall fixed slot="header">
-          <app-toolbar>
-            <shared-premium-logo></shared-premium-logo>
-            <div main-title>Shared Premium</div>
-          </app-toolbar>
-        </app-header>
-
-
-        <a is="pushstate-anchor" href="/">
-          <paper-icon-item>
-            <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Download</span>
-          </paper-icon-item>
-        </a>
-        <a is="pushstate-anchor" href="/test">
-          <paper-icon-item>
-            <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Test</span>
-          </paper-icon-item>
-        </a>
-      </app-header-layout>
-
-
-
-      <!-- <div class="drawer-content">
-
-      </div> -->
-    </app-drawer>
-
-    <app-header-layout>
-      <app-header slot="header" fixed effects="waterfall">
-        <app-toolbar>
-          <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-          <div main-title>Home</div>
-        </app-toolbar>
-      </app-header>
-
-      <div class="content">
-        <app-router>
-          <app-route path="/" import="/test.html" template></app-route>
-          <app-route path="/test" import="/test2.html" template></app-route>
-        </app-router>
-      </div>
-
-    </app-header-layout>
-
-  </app-drawer-layout>
-
-  <script>
-    // var drawerLayout = document.getElementById('drawerLayout');
-    // toggle.addEventListener('click', function () {
-    //   if (drawerLayout.forceNarrow || !drawerLayout.narrow) {
-    //     drawerLayout.forceNarrow = !drawerLayout.forceNarrow;
-    //   } else {
-    //     drawerLayout.drawer.toggle();
-    //   }
-    // });
-
-      // var app = document.querySelector('#app');
-
-      // // Sets app default base URL
-      // app.baseUrl = '/';
-  </script>
+  <shared-premium-app></shared-premium-app>
 
 </body>
 

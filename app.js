@@ -23,8 +23,8 @@ var options = {
   etag: true,
   extensions: ['htm', 'html'],
   index: 'index.html',
-  lastModified: true,
-  maxAge: '1d'
+  lastModified: true
+  // maxAge: '1d'
   // setHeaders: function (res, path, stat) {
   //   res.set('x-timestamp', Date.now());
   //   res.header('Cache-Control', 'public, max-age=1d');

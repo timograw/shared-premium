@@ -1,13 +1,19 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<link rel="import" href="../../bower_components/font-roboto/roboto.html">
-
-<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-  <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../../bower_components/app-router/app-router.html">
+
+<link rel="import" href="../../bower_components/pushstate-anchor/pushstate-anchor.html">
 
 <link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
@@ -16,98 +22,150 @@
 <link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 
+<link rel="import" href="../shared-premium-logo/shared-premium-logo.html">
+
 <dom-module id="shared-premium-app">
   <template>
+
     <style>
        :host {
+        /* --primary: var(--paper-amber-900);
+        --primary-light: (#ffa040);
+        --primary-dark: #c43e00;
+        --secondary: #9e9e9e;
+        --secondary-light: #cfcfcf;
+        --secondary-light-text: #000;
+        --secondary-dark: #707070;
+        --secondary-dark-text: #fff; */
 
+        --primary: var(--paper-grey-500);
+        --primary-text: #fff;
+        --primary-light: #cfcfcf;
+        --primary-dark: #707070;
+        --secondary: var(--paper-orange-a400);
+        --secondary-light: #ffc246;
+        --secondary-light-text: black;
+        --secondary-dark: #c56200;
+        --secondary-dark-text: #fff;
       }
+
+      app-header {
+        background-color: var(--primary);
+        color: #fff;
+      }
+
+      app-header.whiteHeader {
+        background-color: #fff;
+        color: var(--secondary);
+      }
+
+      app-header paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+
+      paper-card.usage {
+        --paper-card-background-color: var(--primary-light);
+        --paper-card-header-color: var(--primary-light-text);
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      }
+
+      app-header-layout a {
+        color: black;
+        text-decoration: none;
+      }
+
+      app-header-layout a:active {
+        color: var(--secondary);
+        text-decoration: none;
+      }
+       paper-progress {
+        --paper-progress-active-color: var(--secondary);
+        --paper-progress-container-color: var(--primary);
+      } 
+
+      .content {
+        padding: 0 10px 0 10px;
+      }
+
+      .usage-header { @apply --paper-font-headline; }
     </style>
 
+    <app-drawer-layout>
 
-  <custom-style>
-    <style is="custom-style">
+      <app-drawer slot="drawer">
 
-    body {
-      margin: 0;
-      font-family: 'Roboto', 'Noto', sans-serif;
-      background-color: #eee;
-    }
+        <app-header-layout has-scrolling-region >
 
-    app-header {
-      background-color: #4285f4;
-      color: #fff;
-    }
+          <app-header class="whiteHeader" waterfall fixed slot="header">
+            <app-toolbar>
+              <shared-premium-logo></shared-premium-logo>
+              <div main-title>Shared Premium</div>
+            </app-toolbar>
+          </app-header>
 
-    app-header paper-icon-button {
-      --paper-icon-button-ink-color: #fff;
-    }
-
-    app-drawer-layout {
-      --app-drawer-layout-content-transition: margin 0.2s;
-    }
-
-    app-drawer {
-      --app-drawer-content-container: {
-        background-color: #eee;
-      }
-    }
-
-    .drawer-content {
-      margin-top: 80px;
-      height: calc(100% - 80px);
-      overflow: auto;
-    }
-
-    </style>
-  </custom-style>
-
-    <app-header-layout>
-
-      <app-header fixed effects="waterfall" slot="header">
-        <app-toolbar>
-          <paper-icon-button id="toggle" icon="menu"></paper-icon-button>
-          <div main-title>Shared Premium</div>
-        </app-toolbar>
-      </app-header>
-
-      <app-drawer-layout id="drawerLayout">
-
-        <app-drawer slot="drawer">
-          <div class="drawer-content">
+          <a is="pushstate-anchor" href="/">
             <paper-icon-item>
-              <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Inbox</span>
+              <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Download</span>
             </paper-icon-item>
-            <paper-icon-item>
-              <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Snoozed</span>
-            </paper-icon-item>
-            <paper-icon-item>
-              <iron-icon icon="done" slot="item-icon"></iron-icon> <span>Done</span>
-            </paper-icon-item>
-            <paper-icon-item>
-              <iron-icon icon="drafts" slot="item-icon"></iron-icon> <span>Drafts</span>
-            </paper-icon-item>
-            <paper-icon-item>
-              <iron-icon icon="send" slot="item-icon"></iron-icon> <span>Sent</span>
-            </paper-icon-item>
-            <paper-icon-item>
-              <iron-icon icon="delete" slot="item-icon"></iron-icon> <span>Trash</span>
-            </paper-icon-item>
-            <paper-icon-item>
-              <iron-icon icon="report" slot="item-icon"></iron-icon> <span>Spam</span>
-            </paper-icon-item>
-          </div>
-        </app-drawer>
+          </a>
 
-        <sample-content size="100"></sample-content>
+          <a is="pushstate-anchor" href="/test">
+            <paper-icon-item>
+              <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Test</span>
+            </paper-icon-item>
+          </a>
 
-      </app-drawer-layout>
+          <paper-card class="usage">
 
-    </app-header-layout>
+            <div class="card-content">
+                          <div class="usage-header">
+              Usage
+            </div>
+              <div class="horizontal justified">
+              <paper-item>100 Mb left</paper-item>
+              <paper-progress value="40" style="margin: auto"></paper-progress>
+              </div>
+            </div>
+          </paper-card>
 
-    <script>
+        </app-header-layout>
 
-      </script>
+      </app-drawer>
+
+      <app-header-layout>
+        <app-header slot="header" fixed effects="waterfall">
+          <app-toolbar>
+            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+            <div main-title>
+              Test
+              <app-router>
+                <app-route path="/">
+                  <template>Download</template>
+                </app-route>
+                <app-route path="/test">
+                  <template>Test</template>
+                </app-route>
+              </app-router>
+            </div>
+          </app-toolbar>
+        </app-header>
+
+        <div class="content">
+          <app-router>
+            <app-route path="/" import="../../pages/shared-premium-page-download/shared-premium-page-download.html"></app-route>
+            <app-route path="/test" import="/test2.html" template></app-route>
+          </app-router>
+        </div>
+
+      </app-header-layout>
+
+    </app-drawer-layout>
 
   </template>
 
@@ -129,14 +187,5 @@
     }
 
     window.customElements.define(SharedPremiumApp.is, SharedPremiumApp);
-
-        //     var drawerLayout = document.getElementById('drawerLayout');
-        // toggle.addEventListener('click', function() {
-        //   if (drawerLayout.forceNarrow || !drawerLayout.narrow) {
-        //     drawerLayout.forceNarrow = !drawerLayout.forceNarrow;
-        //   } else {
-        //     drawerLayout.drawer.toggle();
-        //   }
-        // });
   </script>
 </dom-module>

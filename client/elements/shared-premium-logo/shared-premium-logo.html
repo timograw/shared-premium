@@ -6,8 +6,14 @@
     <template>
 
         <style>
+            .container {
+                height: 48px;
+                width: 48px;
+            }
             .cloudy {
+                position: relative;
                 animation: cloudy 5s ease-in-out infinite;
+                left: -5px;
             }
 
             .cloudy:after {
@@ -19,8 +25,8 @@
                 width: 20px;
                 opacity: 0.2;
                 position: absolute;
-                left: 2px;
-                bottom: -10px;
+                left: 12px;
+                bottom: -17px;
                 transform: scale(1);
             }
 
@@ -38,23 +44,32 @@
             }
 
             .behind {
-                fill: #FF6F00;
+                fill: var(--secondary);
                 position: absolute;
                 z-index: -1;
-                transform: scale(1.75);
+                /* transform: scale(1.75); */
+                --iron-icon-width: 42px;
+                --iron-icon-height: 42px;
             }
 
             .top {
-                /* position: absolute; */
+                 /* position: absolute;  */
                 fill: #fff;
-                transform: scale(0.75);
-                margin-right: 20px;
+                
+                /* transform: scale(0.75); */
+                /* margin-right: 20px; */
+                --iron-icon-width: 16px;
+                --iron-icon-height: 16px;
+                left: 12px;
+                top: 9px;
             }
         </style>
 
-        <div class="cloudy">
-            <iron-icon icon="cloud" class="behind"></iron-icon>
-            <iron-icon icon="social:share" class="top"></iron-icon>
+        <div class="container">
+            <div class="cloudy">
+                <iron-icon icon="cloud" class="behind"></iron-icon>
+                <iron-icon icon="social:share" class="top"></iron-icon>
+            </div>
         </div>
     </template>
 

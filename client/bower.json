@@ -14,7 +14,9 @@
     "paper-progress": "^2.0.1",
     "iron-icon": "^2.0.0",
     "app-router": "^2.7.2",
-    "pushstate-anchor": "^0.4.5"
+    "pushstate-anchor": "^0.4.5",
+    "paper-styles": "^2.0.0",
+    "paper-card": "PolymerElements/paper-card#^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
@@ -23,6 +25,7 @@
   "resolutions": {
     "polymer": "^2.0.1",
     "webcomponentsjs": "^v1.0.0",
-    "font-roboto": "^1.0.1"
+    "font-roboto": "^1.0.1",
+    "paper-ripple": "1 - 2"
   }
 }

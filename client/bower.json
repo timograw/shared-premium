@@ -16,7 +16,17 @@
     "app-router": "^2.7.2",
     "pushstate-anchor": "^0.4.5",
     "paper-styles": "^2.0.0",
-    "paper-card": "PolymerElements/paper-card#^2.0.0"
+    "paper-card": "PolymerElements/paper-card#^2.0.0",
+    "iron-selector": "^2.0.0",
+    "app-route": "PolymerElements/app-route",
+    "iron-behaviors": "PolymerElements/iron-behaviors#^2.0.0",
+    "paper-listbox": "^2.0.0",
+    "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
+    "iron-form": "PolymerElements/iron-form#^2.0.0",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "paper-input": "PolymerElements/paper-input#^2.0.1",
+    "iron-cookie": "wincinderith/iron-cookie",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
@@ -24,8 +34,11 @@
   },
   "resolutions": {
     "polymer": "^2.0.1",
-    "webcomponentsjs": "^v1.0.0",
+    "webcomponentsjs": "^v1.0.2",
     "font-roboto": "^1.0.1",
-    "paper-ripple": "1 - 2"
+    "paper-ripple": "1 - 2",
+    "paper-styles": "1 - 2",
+    "iron-selector": "1 - 2",
+    "iron-behaviors": "1 - 2"
   }
 }

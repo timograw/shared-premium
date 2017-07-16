@@ -1,0 +1,59 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+
+<dom-module id="shared-premium-login-dialog">
+    <template>
+        <style>
+            iron-icon,
+            div[suffix] {
+                color: hsl(0, 0%, 50%);
+                margin-right: 12px;
+            }
+        </style>
+        <paper-dialog modal opened id="loginDialog">
+            <h1>Login</h1>
+            <iron-form>
+                <form method="get" action="/form/handler">
+                    <paper-input label="Username" required>
+                        <iron-icon icon="mail" slot="prefix"></iron-icon>
+                    </paper-input>
+                    <paper-input label="Password" type="password" required>
+                        <iron-icon icon="communication:vpn-key" slot="prefix"></iron-icon>
+                    </paper-input>
+                    <div class="buttons">
+                        <paper-button autofocus>Login</paper-button>
+                    </div>
+                </form>
+            </iron-form>
+        </paper-dialog>
+    </template>
+
+    <script>
+        /**
+     * @customElement
+     * @polymer
+     */
+        class SharedPremiumLoginDialog extends Polymer.Element {
+            static get is() { return 'shared-premium-login-dialog'; }
+            static get properties() {
+                return {
+                };
+            }
+
+            ready() {
+                super.ready();
+                this.$.loginDialog.open();
+            }
+        }
+
+        window.customElements.define(SharedPremiumLoginDialog.is, SharedPremiumLoginDialog);
+    </script>
+
+</dom-module>

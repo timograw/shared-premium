@@ -1,34 +1,47 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<!-- Iron elements -->
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
+<!-- Paper elements -->
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
-<link rel="import" href="../../bower_components/app-router/app-router.html">
-
-<link rel="import" href="../../bower_components/pushstate-anchor/pushstate-anchor.html">
-
+<!-- App elements -->
 <link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+
+<link rel="import" href="../../bower_components/pushstate-anchor/pushstate-anchor.html">
 
 <link rel="import" href="../shared-premium-logo/shared-premium-logo.html">
+<link rel="import" href="../shared-premium-login-dialog/shared-premium-login-dialog.html">
+<link rel="import" href="../shared-premium-account/shared-premium-account.html">
+
+<link rel="import" href="../../pages/shared-premium-page-dashboard/shared-premium-page-dashboard.html">
+<link rel="import" href="../../pages/shared-premium-page-download/shared-premium-page-download.html">
+
 
 <dom-module id="shared-premium-app">
   <template>
 
     <style>
        :host {
+
         /* --primary: var(--paper-amber-900);
         --primary-light: (#ffa040);
         --primary-dark: #c43e00;
@@ -37,11 +50,19 @@
         --secondary-light-text: #000;
         --secondary-dark: #707070;
         --secondary-dark-text: #fff; */
-
         --primary: var(--paper-grey-500);
         --primary-text: #fff;
         --primary-light: #cfcfcf;
         --primary-dark: #707070;
+
+        /* --primary: var(--paper-light-blue-500);
+        --primary-text: #000;
+        --primary-light: #67daff;
+        --primary-dark: #007ac1; */
+        /* --primary: var(--paper-red-900);
+        --primary-text: #000;
+        --primary-light: var(--paper-red-200);
+        --primary-dark: var(--paper-red-800); */
         --secondary: var(--paper-orange-a400);
         --secondary-light: #ffc246;
         --secondary-light-text: black;
@@ -69,10 +90,19 @@
 
       paper-card.usage {
         --paper-card-background-color: var(--primary-light);
-        --paper-card-header-color: var(--primary-light-text);
+        --paper-card-header-color: var(--primary);
         position: absolute;
         bottom: 0;
         width: 100%;
+        margin-bottom: 32px;
+      }
+
+      paper-card.usage-bottom {
+        --paper-card-background-color: var(--primary);
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 32px;
       }
 
       app-header-layout a {
@@ -84,23 +114,59 @@
         color: var(--secondary);
         text-decoration: none;
       }
-       paper-progress {
+
+      paper-progress {
         --paper-progress-active-color: var(--secondary);
-        --paper-progress-container-color: var(--primary);
-      } 
+        --paper-progress-container-color: var(--secondary-light);
+      }
+
+      iron-icon {
+        --iron-icon-fill-color: var(--primary);
+      }
 
       .content {
         padding: 0 10px 0 10px;
       }
 
-      .usage-header { @apply --paper-font-headline; }
+      .usage-header {
+        @apply --paper-font-headline;
+      }
+
+      .footer-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--primary);
+      }
+
+      .footer-container .top {
+        height: 20px;
+        background-color: var(--primary-light);
+      }
+
+      .footer-container .middle {
+        width: 100%;
+        background-color: var(--primary);
+      }
+
+      .footer-container .bottom {
+        height: 20px;
+        background-color: var(--primary-dark);
+      }
     </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}">
+    </app-route>
+
+    <!-- <shared-premium-account></shared-premium-account> -->
 
     <app-drawer-layout>
 
       <app-drawer slot="drawer">
 
-        <app-header-layout has-scrolling-region >
+        <app-header-layout has-scrolling-region>
 
           <app-header class="whiteHeader" waterfall fixed slot="header">
             <app-toolbar>
@@ -109,30 +175,54 @@
             </app-toolbar>
           </app-header>
 
-          <a is="pushstate-anchor" href="/">
-            <paper-icon-item>
-              <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Download</span>
-            </paper-icon-item>
-          </a>
+          <!-- <iron-selector selected="[[page]]" attr-for-selected="name" fallback-selection="default"> -->
+          <paper-listbox>
+            <a href="/" tabindex="-1">
+              <paper-icon-item>
+                <iron-icon icon="icons:dashboard" slot="item-icon"></iron-icon> <span>Dashboard</span>
+              </paper-icon-item>
+            </a>
+            <a href="/download" tabindex="-1">
+              <paper-icon-item>
+                <iron-icon icon="icons:file-download" slot="item-icon"></iron-icon> <span>Download</span>
+              </paper-icon-item>
+            </a>
+            <!-- <a is="pushstate-anchor" href="/" tabindex="-1"> is="pushstate-anchor"
+              <paper-icon-item>
+                <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Download</span>
+              </paper-icon-item>
+            </a>
 
-          <a is="pushstate-anchor" href="/test">
-            <paper-icon-item>
-              <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Test</span>
-            </paper-icon-item>
-          </a>
+            <a is="pushstate-anchor" href="/download" tabindex="-1">
+              <paper-icon-item>
+                <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Test</span>
+              </paper-icon-item>
+            </a> -->
+          </paper-listbox>
+          <!-- </iron-selector> -->
 
-          <paper-card class="usage">
+          <div class="footer-container">
 
-            <div class="card-content">
-                          <div class="usage-header">
-              Usage
-            </div>
-              <div class="horizontal justified">
-              <paper-item>100 Mb left</paper-item>
-              <paper-progress value="40" style="margin: auto"></paper-progress>
+            <!-- <div class="top"></div> -->
+            <paper-card class="middle">
+              <div class="card-content">
+                <div class="usage-header">
+                  Usage
+                </div>
+                <div class="horizontal justified">
+                  <paper-item>100 Mb left</paper-item>
+                  <paper-progress value="40" style="margin: auto"></paper-progress>
+                </div>
               </div>
-            </div>
-          </paper-card>
+            </paper-card>
+            <div class="bottom"></div>
+          </div>
+          <!-- <paper-card class="usage"> -->
+
+          <!-- 
+          <paper-card class="usage-bottom">
+
+          </paper-card> -->
 
         </app-header-layout>
 
@@ -142,25 +232,15 @@
         <app-header slot="header" fixed effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div main-title>
-              Test
-              <app-router>
-                <app-route path="/">
-                  <template>Download</template>
-                </app-route>
-                <app-route path="/test">
-                  <template>Test</template>
-                </app-route>
-              </app-router>
-            </div>
+            <div main-title>[[currentPage.title]]</div>
           </app-toolbar>
         </app-header>
 
         <div class="content">
-          <app-router>
-            <app-route path="/" import="../../pages/shared-premium-page-download/shared-premium-page-download.html"></app-route>
-            <app-route path="/test" import="/test2.html" template></app-route>
-          </app-router>
+          <iron-pages selected="[[routeData.page]]" attr-for-selected="name" fallback-selection="view404" role="main" selected-item="{{currentPage}}">
+            <shared-premium-page-dashboard name="" title="Dashboard"></shared-premium-page-dashboard>
+            <shared-premium-page-download name="download" title="Download"></shared-premium-page-download>
+          </iron-pages>
         </div>
 
       </app-header-layout>
@@ -178,9 +258,9 @@
       static get is() { return 'shared-premium-app'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'shared-premium-app'
+          LoggingIn: {
+            type: Boolean,
+            value: true
           }
         };
       }

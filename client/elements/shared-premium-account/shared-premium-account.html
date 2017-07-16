@@ -1,0 +1,35 @@
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../shared-premium-logo/shared-premium-logo.html">
+
+<dom-module id="shared-premium-account">
+  <template>
+
+
+    <shared-premium-login-dialog></shared-premium-login-dialog>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class SharedPremiumAccount extends Polymer.Element {
+      static get is() { return 'shared-premium-account'; }
+      static get properties() {
+        return {
+          isLoggedIn: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+    }
+
+    window.customElements.define(SharedPremiumAccount.is, SharedPremiumAccount);
+  </script>
+
+</dom-module>

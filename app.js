@@ -4,15 +4,19 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/shared-premium',{
+   useMongoClient: true
+});
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var api = require('./routes/api');
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+// app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
@@ -38,9 +42,9 @@ app.use(cookieParser());
 app.use('/', express.static(path.join(__dirname, 'client'), options));
 app.use('/api', api);
 
-app.get('*', function(req, res){
-  res.sendFile(path.join(__dirname, 'client/index.html'), options);
-});
+// app.get('*.html', function(req, res){
+//   res.sendFile(path.join(__dirname, 'client/index.html'), options);
+// });
 
 // app.use('/', index);
 // app.use('/users', users);

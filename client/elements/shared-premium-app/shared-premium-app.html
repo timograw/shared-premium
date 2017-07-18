@@ -29,7 +29,6 @@
 <link rel="import" href="../../bower_components/pushstate-anchor/pushstate-anchor.html">
 
 <link rel="import" href="../shared-premium-logo/shared-premium-logo.html">
-<link rel="import" href="../shared-premium-login-dialog/shared-premium-login-dialog.html">
 <link rel="import" href="../shared-premium-account/shared-premium-account.html">
 
 <link rel="import" href="../../pages/shared-premium-page-dashboard/shared-premium-page-dashboard.html">
@@ -125,7 +124,9 @@
       }
 
       .content {
-        padding: 0 10px 0 10px;
+        margin: auto;
+        padding: 20px;
+        max-width: 1080px;
       }
 
       .usage-header {
@@ -160,7 +161,7 @@
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
 
-    <!-- <shared-premium-account></shared-premium-account> -->
+     <shared-premium-account></shared-premium-account> 
 
     <app-drawer-layout>
 
@@ -217,12 +218,6 @@
             </paper-card>
             <div class="bottom"></div>
           </div>
-          <!-- <paper-card class="usage"> -->
-
-          <!-- 
-          <paper-card class="usage-bottom">
-
-          </paper-card> -->
 
         </app-header-layout>
 

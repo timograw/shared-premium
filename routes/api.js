@@ -18,6 +18,7 @@ router.get('/', function(req, res, next) {
 router.route('/accountinfo')
         .get(controller.get_account_information);
 
+router.route('/login').all(controller.login);
 // .get('/accountinfo', function(req, res, next) {
 //   res.render('index', { title: 'Express' });
 // });

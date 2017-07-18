@@ -1,8 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
 <link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/iron-cookie/iron-cookie.html">
 
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
@@ -17,22 +19,39 @@
                 margin-right: 12px;
             }
         </style>
-        <paper-dialog modal opened id="loginDialog">
-            <h1>Login</h1>
-            <iron-form>
-                <form method="get" action="/form/handler">
-                    <paper-input label="Username" required>
+
+        <iron-cookie name="sessionid" value="{{sessionid}}"></iron-cookie>
+
+        <iron-ajax url="/api/login" 
+            method="POST"
+            content-type="application/json"
+            body="{{ajaxParams}}"
+            handle-as="json" 
+            on-response="handleResponse"
+            id="loginRequest" 
+            last-response="{{ajaxResponse}}"
+            verbose></iron-ajax>
+
+        <iron-form id="loginForm">
+            <form method="get" action="/form/handler">
+                <paper-dialog modal id="loginDialog">
+                    <h2>Login</h2>
+
+                    <paper-input label="Username" required value="{{username}}">
                         <iron-icon icon="mail" slot="prefix"></iron-icon>
                     </paper-input>
-                    <paper-input label="Password" type="password" required>
+                    <paper-input label="Password" type="password" required value="{{password}}">
                         <iron-icon icon="communication:vpn-key" slot="prefix"></iron-icon>
                     </paper-input>
                     <div class="buttons">
-                        <paper-button autofocus>Login</paper-button>
+                        <paper-button autofocus raised on-click="login">Login</paper-button>
                     </div>
-                </form>
-            </iron-form>
-        </paper-dialog>
+                    <div class="ouput">{{ajaxResponse}}</div>
+
+                </paper-dialog>
+
+            </form>
+        </iron-form>
     </template>
 
     <script>
@@ -44,12 +63,28 @@
             static get is() { return 'shared-premium-login-dialog'; }
             static get properties() {
                 return {
+                    sessionid: {
+                        type: String
+                    }
                 };
             }
 
             ready() {
                 super.ready();
-                this.$.loginDialog.open();
+                if (!this.sessionid)
+                    this.$.loginDialog.open();
+            }
+
+            login() {
+                this.ajaxParams = JSON.stringify({
+                    username: this.username,
+                    password: this.password
+                });
+                this.$.loginRequest.generateRequest();
+            }
+
+            handleResponse(event) {
+                this.$.loginDialog.close();
             }
         }
 

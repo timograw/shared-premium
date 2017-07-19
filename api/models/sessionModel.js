@@ -1,8 +1,10 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
+  , Schema = mongoose.Schema
 
-var sessionSchema = mongoose.Schema({
-    user_id: {
-        type: String
+var sessionSchema = Schema({
+    user: {
+        type: Schema.Types.ObjectId, 
+        ref: "User"
     },
     uuid: {
         type: String

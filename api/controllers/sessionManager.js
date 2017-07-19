@@ -6,7 +6,7 @@ const uuidv4 = require('uuid/v4');
 
 exports.login = function (username, password, callback) {
     // Load user
-    User.findOne({ "username": username }).exec(function (err, user) {
+    User.findOne({ "username": username }).lean().exec(function (err, user) {
         if (err) throw err;
 
         // Check if user found
@@ -14,7 +14,7 @@ exports.login = function (username, password, callback) {
             console.log("User not found: " + username);
             callback(null);
         }
-        else {
+        else {  
             // Verify password
             hasher(password).verifyAgainst(user.password_hash, function (error, verified) {
                 if (error) throw error;
@@ -22,13 +22,14 @@ exports.login = function (username, password, callback) {
                     console.log("User found, but password does not match");
                     callback(null);
                 } else {
-                    var session = new Session();
-                    session.user_id = user.id;
-                    session.uuid = uuidv4();
-                    session.save(function(err, session) {
-                        session.user = user;
-
+                    var session = new Session({
+                        user: user,
+                        uuid: uuidv4()
+                    });
+                    session.save(function(err) {
+                        if (err) throw err;
                         callback(session);
+                        
                     })
                 }
             });

@@ -28,7 +28,11 @@ exports.login = function (req, res) {
         if (!session)
             res.sendStatus(403);
         else {
-            res.cookie('sessionid', session.uuid).sendStatus(200);
+            session.populate('user', function(err, session) {
+                res.cookie('sessionid', session.toJSON()).send(session.toJSON());
+            });
+            //session.user = User
+            
         }
     });
 };

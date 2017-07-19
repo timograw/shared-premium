@@ -13,7 +13,6 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
-<link rel="import" href="../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
 <!-- App elements -->
@@ -34,40 +33,25 @@
 <link rel="import" href="../../pages/shared-premium-page-dashboard/shared-premium-page-dashboard.html">
 <link rel="import" href="../../pages/shared-premium-page-download/shared-premium-page-download.html">
 
+<link rel="import" href="../shared-premium-style/shared-premium-style.html">
 
 <dom-module id="shared-premium-app">
   <template>
 
-    <style>
-       :host {
+    <style include="shared-premium-style">
+       /* :host {
 
-        /* --primary: var(--paper-amber-900);
-        --primary-light: (#ffa040);
-        --primary-dark: #c43e00;
-        --secondary: #9e9e9e;
-        --secondary-light: #cfcfcf;
-        --secondary-light-text: #000;
-        --secondary-dark: #707070;
-        --secondary-dark-text: #fff; */
         --primary: var(--paper-grey-500);
         --primary-text: #fff;
         --primary-light: #cfcfcf;
         --primary-dark: #707070;
 
-        /* --primary: var(--paper-light-blue-500);
-        --primary-text: #000;
-        --primary-light: #67daff;
-        --primary-dark: #007ac1; */
-        /* --primary: var(--paper-red-900);
-        --primary-text: #000;
-        --primary-light: var(--paper-red-200);
-        --primary-dark: var(--paper-red-800); */
         --secondary: var(--paper-orange-a400);
         --secondary-light: #ffc246;
         --secondary-light-text: black;
         --secondary-dark: #c56200;
         --secondary-dark-text: #fff;
-      }
+      } */
 
       app-header {
         background-color: var(--primary);

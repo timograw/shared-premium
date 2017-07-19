@@ -10,42 +10,53 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
+<link rel="import" href="../shared-premium-style/shared-premium-style.html">
+
 <dom-module id="shared-premium-login-dialog">
     <template>
-        <style>
+        <style include="shared-premium-style">
             iron-icon,
             div[suffix] {
                 color: hsl(0, 0%, 50%);
                 margin-right: 12px;
             }
+
+            paper-button {
+                /* background: var(--secondary); */
+                color: var(--secondary);
+            }
+
+            .buttons {
+                /* border-top: 1px solid #e8e8e8;
+    padding: 5px 16px;
+    position: relative; */
+            }
         </style>
 
-        <iron-cookie name="sessionid" value="{{sessionid}}"></iron-cookie>
+        <iron-cookie name="session" value="{{session}}"></iron-cookie>
 
-        <iron-ajax url="/api/login" 
-            method="POST"
-            content-type="application/json"
-            body="{{ajaxParams}}"
-            handle-as="json" 
-            on-response="handleResponse"
-            id="loginRequest" 
-            last-response="{{ajaxResponse}}"
-            verbose></iron-ajax>
+        <iron-ajax url="/api/login" method="POST" content-type="application/json" body="{{ajaxParams}}" handle-as="json" on-response="handleResponse"
+            id="loginRequest" last-response="{{ajaxResponse}}" verbose></iron-ajax>
 
         <iron-form id="loginForm">
             <form method="get" action="/form/handler">
                 <paper-dialog modal id="loginDialog">
                     <h2>Login</h2>
 
-                    <paper-input label="Username" required value="{{username}}">
-                        <iron-icon icon="mail" slot="prefix"></iron-icon>
-                    </paper-input>
-                    <paper-input label="Password" type="password" required value="{{password}}">
-                        <iron-icon icon="communication:vpn-key" slot="prefix"></iron-icon>
-                    </paper-input>
-                    <div class="buttons">
-                        <paper-button autofocus raised on-click="login">Login</paper-button>
+                    <div>
+                        <paper-input label="Username" required value="{{username}}">
+                            <iron-icon icon="mail" slot="prefix"></iron-icon>
+                        </paper-input>
+
+                        <paper-input label="Password" type="password" required value="{{password}}">
+                            <iron-icon icon="communication:vpn-key" slot="prefix"></iron-icon>
+                        </paper-input>
                     </div>
+
+                    <div class="buttons horizontal end-justified layout">
+                        <paper-button autofocus on-click="login">Login</paper-button>
+                    </div>
+
                     <div class="ouput">{{ajaxResponse}}</div>
 
                 </paper-dialog>
@@ -65,6 +76,9 @@
                 return {
                     sessionid: {
                         type: String
+                    },
+                    session: {
+                        type: Object
                     }
                 };
             }

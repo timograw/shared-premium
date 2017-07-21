@@ -1,0 +1,73 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-icons/device-icons.html">
+
+<link rel="import" href="../shared-premium-style/shared-premium-style.html">
+
+<dom-module id="shared-premium-usage">
+    <template include="shared-premium-style">
+        <style>
+            paper-card {
+                width: 100%;
+                background: var(--primary);
+            }
+
+            paper-item {
+                color: var(--secondary-text);
+            }
+
+            paper-progress {
+                margin: auto;
+            }
+
+            paper-progress {
+                --paper-progress-active-color: var(--secondary);
+                --paper-progress-container-color: var(--secondary-light);
+            }
+
+            .usage-header {
+                @apply --paper-font-headline;
+            }
+
+            .usage-text {
+                margin: 10px;
+            }
+
+            .usage-text iron-icon {
+                margin-right: 20px;
+            }
+
+        </style>
+
+        <paper-card>
+            <div class="card-content">
+                <div class="usage-header">
+                    Usage
+                </div>
+                <div class="horizontal justified">
+                    <div class="usage-text">
+                        <iron-icon icon="device:storage" slot="item-icon"></iron-icon> <span>100 Mb left</span>
+                    </div>
+                    <paper-progress value="40"></paper-progress>
+                </div>
+            </div>
+        </paper-card>
+    </template>
+
+    <script>
+        /**
+     * @customElement
+     * @polymer
+     */
+        class SharedPremiumUsage extends Polymer.Element {
+            static get is() { return 'shared-premium-usage'; }
+            static get properties() {
+                return {
+                };
+            }
+        }
+
+        window.customElements.define(SharedPremiumUsage.is, SharedPremiumUsage);
+    </script>
+
+</dom-module>

@@ -8,20 +8,23 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 var User = require('./api/models/userModel');
 
-var timo = new User({ 
-    username: 'admin',
+var user = new User({ 
+    username: 'test',
     is_admin: true
  });
 
-password('password').hash(function (error, hash) {
+console.log(user.username);
+
+password('test').hash(function (error, hash) {
     if (error) throw error;
-    timo.password_hash = hash;
-    timo.save(function (err) {
+    user.password_hash = hash;
+    user.save(function (err) {
         if (err)  throw err;
         console.log('saved');
         process.exit();
     });
 
     // process.exit();
+
 });
 

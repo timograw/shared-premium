@@ -4,7 +4,7 @@
 <dom-module id='shared-premium-style'>
   <template>
     <style include="iron-flex iron-flex-alignment">
-      :root {
+       :root {
         --primary: var(--paper-grey-500);
         --primary-text: #fff;
         --primary-light: #cfcfcf;
@@ -16,6 +16,11 @@
         --secondary-light-text: black;
         --secondary-dark: #c56200;
         --secondary-dark-text: #fff;
+      }
+
+      paper-progress {
+        --paper-progress-active-color: var(--secondary);
+        --paper-progress-container-color: var(--secondary-light);
       }
     </style>
   </template>

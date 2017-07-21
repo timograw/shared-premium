@@ -33,26 +33,15 @@
 <link rel="import" href="../../pages/shared-premium-page-dashboard/shared-premium-page-dashboard.html">
 <link rel="import" href="../../pages/shared-premium-page-download/shared-premium-page-download.html">
 
+<link rel="import" href="../shared-premium-widgets/shared-premium-usage.html">
+
 <link rel="import" href="../shared-premium-style/shared-premium-style.html">
+
 
 <dom-module id="shared-premium-app">
   <template>
 
     <style include="shared-premium-style">
-       /* :host {
-
-        --primary: var(--paper-grey-500);
-        --primary-text: #fff;
-        --primary-light: #cfcfcf;
-        --primary-dark: #707070;
-
-        --secondary: var(--paper-orange-a400);
-        --secondary-light: #ffc246;
-        --secondary-light-text: black;
-        --secondary-dark: #c56200;
-        --secondary-dark-text: #fff;
-      } */
-
       app-header {
         background-color: var(--primary);
         color: #fff;
@@ -130,7 +119,7 @@
         background-color: var(--primary-light);
       }
 
-      .footer-container .middle {
+      .footer-container shared-premium-usage {
         width: 100%;
         background-color: var(--primary);
       }
@@ -145,7 +134,7 @@
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
 
-     <shared-premium-account></shared-premium-account> 
+    <shared-premium-account session="{{session}}"></shared-premium-account> 
 
     <app-drawer-layout>
 
@@ -160,7 +149,6 @@
             </app-toolbar>
           </app-header>
 
-          <!-- <iron-selector selected="[[page]]" attr-for-selected="name" fallback-selection="default"> -->
           <paper-listbox>
             <a href="/" tabindex="-1">
               <paper-icon-item>
@@ -172,34 +160,13 @@
                 <iron-icon icon="icons:file-download" slot="item-icon"></iron-icon> <span>Download</span>
               </paper-icon-item>
             </a>
-            <!-- <a is="pushstate-anchor" href="/" tabindex="-1"> is="pushstate-anchor"
-              <paper-icon-item>
-                <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Download</span>
-              </paper-icon-item>
-            </a>
-
-            <a is="pushstate-anchor" href="/download" tabindex="-1">
-              <paper-icon-item>
-                <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Test</span>
-              </paper-icon-item>
-            </a> -->
           </paper-listbox>
-          <!-- </iron-selector> -->
+
 
           <div class="footer-container">
 
-            <!-- <div class="top"></div> -->
-            <paper-card class="middle">
-              <div class="card-content">
-                <div class="usage-header">
-                  Usage
-                </div>
-                <div class="horizontal justified">
-                  <paper-item>100 Mb left</paper-item>
-                  <paper-progress value="40" style="margin: auto"></paper-progress>
-                </div>
-              </div>
-            </paper-card>
+            <shared-premium-usage session="{{session}}"></shared-premium-usage>
+
             <div class="bottom"></div>
           </div>
 

@@ -2,7 +2,7 @@
 
 let fetch = require('node-fetch');
 
-module.exports = class PremiumizeMe{
+exports.PremiumizeMe = class PremiumizeMe{
     constructor(configuration) {
         this.configuration = configuration
     }
@@ -29,23 +29,39 @@ module.exports = class PremiumizeMe{
         })
     }
 
-    accountInformation() {
+    accountInformation(callback) {
         var url = 'https://www.premiumize.me/api/account/info?' + this._defaultQueryString();
 
-        return fetch(url, {
+        fetch(url, {method: 'GET'}).then(response => {
+            // console.log(response.status);
+            // console.log(response.statusText);
+            return response.json();
+        }).then(function(json) {
+            callback(json);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    browseTorrent(hash) {
+
+    }
+
+    listDirectory(id, callback) {
+        var url = 'https://www.premiumize.me/api/folder/list?' + this._defaultQueryString();
+        if (id) url = url + '&id=' + id
+
+        fetch(url, {
             method: 'GET',
             headers: {
-                'customer_id': '982043859',
-                'pin': 'z234zdkiis57ahc0'
+                'customer_id': this.configuration.customer_id,
+                'pin': this.configuration.pin
             },
             body: '{}'
         }).then(response => {
-            console.log(response.ok);
-            console.log(response.status);
-            console.log(response.statusText);
-            console.log(response.headers.raw());
-            console.log(response.headers.get('content-type'));
             return response.json();
+        }).then(function(json) {
+            callback(json);
         }).catch(err => {
             console.log(err);
         })

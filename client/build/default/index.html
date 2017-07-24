@@ -10,202 +10,25 @@
 
   <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
 
-   <link rel="import" href="/bower_components/font-roboto/roboto.html">
+  <link rel="import" href="/bower_components/font-roboto/roboto.html">
 
-  <link rel="import" href="/bower_components/iron-pages/iron-pages.html">
-  <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
-  <link rel="import" href="/bower_components/iron-icons/social-icons.html">
-
-  <!-- <link rel="import" href="/bower_components/paper-menu/paper-menu.html"> -->
-  <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
-  <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
-  <link rel="import" href="/bower_components/paper-progress/paper-progress.html">
-
-  <link rel="import" href="/bower_components/app-router/app-router.html">
-
-  <link rel="import" href="/bower_components/pushstate-anchor/pushstate-anchor.html">
-
-  <link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-  <link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
-  <link rel="import" href="/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-  <link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
-  <link rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html">
-  <link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html"> 
-
-  <link rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-  <link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
-  <link rel="import" href="/bower_components/paper-item/paper-icon-item.html">
-  <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
-
-  <!-- <link rel="import" href="/src/shared-premium-app/shared-premium-app.html"> -->
-   </head><custom-style>
+  <link rel="import" href="/elements/shared-premium-app/shared-premium-app.html">
+  
+  </head><custom-style>
     <style is="custom-style">
       body {
         margin: 0;
         font-family: 'Roboto', 'Noto', sans-serif;
         background-color: #eee;
+        min-height: 450px;
       }
-
-      app-header {
-        background-color: #FF6F00;
-        color: #fff;
-      }
-
-      app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
-      }
-
-      app-drawer-layout:not([narrow]) [drawer-toggle] {
-        display: none;
-      }
-
-      paper-progress {
-        display: block;
-        width: 100%;
-        --paper-progress-active-color: rgba(255, 255, 255, 0.5);
-        --paper-progress-container-color: transparent;
-      }
-
-      .cloudy {
-        animation: cloudy 5s ease-in-out infinite;
-      }
-
-      .cloudy:after {
-        animation: cloudy_shadow 5s ease-in-out infinite;
-        background: #000000;
-        border-radius: 50%;
-        content: '';
-        height: 5px;
-        width: 20px;
-        opacity: 0.2;
-        position: absolute;
-        left: 2px;
-        bottom: -10px;
-        transform: scale(1);
-      }
-
-      @keyframes cloudy {
-        50% {
-          transform: translateY(-3px);
-        }
-      }
-
-      @keyframes cloudy_shadow {
-        50% {
-          transform: translateY(5px) scale(.7);
-          opacity: .05;
-        }
-      }
-
-      .behind {
-        fill: #FF6F00;
-        position: absolute;
-        z-index: -1;
-        transform: scale(1.75);
-      }
-
-      .top {
-        position: absolute;
-        fill: #fff;
-        transform: scale(0.75);
-        margin-right: 15px;
-      }
-    </style>
-  </custom-style> 
-
-    <custom-style>
-    <style is="custom-style">
-
-    body {
-      margin: 0;
-      font-family: 'Roboto', 'Noto', sans-serif;
-      background-color: #eee;
-    }
-
-    app-header {
-      background-color: #4285f4;
-      color: #fff;
-    }
-
-    app-header paper-icon-button {
-      --paper-icon-button-ink-color: white;
-    }
-
-    app-drawer-layout:not([narrow]) [drawer-toggle] {
-      display: none;
-    }
-
     </style>
   </custom-style>
 
 
 
 
-
-  <app-drawer-layout>
-
-    <app-drawer slot="drawer">
-
-      <app-header-layout has-scrolling-region="">
-          <a is="pushstate-anchor" href="/"> 
-          <paper-icon-item>
-            <iron-icon icon="inbox" slot="item-icon"></iron-icon> <span>Download</span>
-          </paper-icon-item>
-         </a> 
-         <a is="pushstate-anchor" href="/test"> 
-          <paper-icon-item>
-            <iron-icon icon="query-builder" slot="item-icon"></iron-icon> <span>Test</span>
-          </paper-icon-item>
-         </a> 
-      </app-header-layout>
- 
-       <app-toolbar>
-               <div class="cloudy">
-          <iron-icon icon="cloud" class="behind"></iron-icon>
-          <iron-icon icon="social:share" class="top"></iron-icon>
-        </div>
-        Shared Premium
-      </app-toolbar> 
-
-      <!-- <div class="drawer-content">
-
-      </div> -->
-    </app-drawer>
-
-    <app-header-layout>
-      <app-header slot="header" fixed="" effects="waterfall">
-        <app-toolbar>
-          <paper-icon-button icon="menu" drawer-toggle=""></paper-icon-button>
-          <div main-title="">Home</div>
-        </app-toolbar>
-      </app-header>
-
-      <div class="content">
-        <app-router>
-          <app-route path="/" import="/test.html" template=""></app-route>
-          <app-route path="/test" import="/test2.html" template=""></app-route>
-        </app-router>
-      </div>
-
-    </app-header-layout>
-
-  </app-drawer-layout>
-
-  <script>
-    // var drawerLayout = document.getElementById('drawerLayout');
-    // toggle.addEventListener('click', function () {
-    //   if (drawerLayout.forceNarrow || !drawerLayout.narrow) {
-    //     drawerLayout.forceNarrow = !drawerLayout.forceNarrow;
-    //   } else {
-    //     drawerLayout.drawer.toggle();
-    //   }
-    // });
-
-      // var app = document.querySelector('#app');
-
-      // // Sets app default base URL
-      // app.baseUrl = '/';
-  </script>
+  <shared-premium-app></shared-premium-app>
 
 
 

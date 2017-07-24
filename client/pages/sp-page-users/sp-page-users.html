@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
+
+<link rel="import" href="../../elements/sp-style/sp-style.html">
+
+<dom-module id="sp-page-users">
+  <template>
+
+    <style include="sp-style">
+      vaadin-grid {
+        height:100%
+      }
+    </style>
+
+    <iron-ajax url="/api/users" method="GET" content-type="application/json" handle-as="json" id="usersRequest" last-response="{{users}}"
+      last-error="{{error}}" auto></iron-ajax>
+
+    <vaadin-grid aria-label="Basic Binding Example" items="[[users]]">
+
+      <vaadin-grid-column>
+        <template class="header">
+          <div class="cell first">
+            Username
+          </div>
+        </template>
+        <template>
+          <div class="cell first">
+            [[item.username]]
+          </div>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column>
+        <template class="header">
+          <div class="cell">
+            Admin
+          </div>
+        </template>
+        <template>
+          <div class="cell">
+            <paper-checkbox checked="[[item.is_admin]]"></paper-checkbox>
+          </div>
+        </template>
+      </vaadin-grid-column>
+
+    </vaadin-grid>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class SpPageUsers extends Polymer.Element {
+      static get is() { return 'sp-page-users'; }
+      static get properties() {
+        return {
+
+        };
+      }
+    }
+
+    window.customElements.define(SpPageUsers.is, SpPageUsers);
+  </script>
+
+</dom-module>

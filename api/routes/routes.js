@@ -6,5 +6,5 @@ module.exports = function(app) {
     app.route('/accountinfo')
         .get(controller.get_account_information);
 
-    app.route('/login').post(controller.login);
+    app.route('/session').post(controller.login);
 };

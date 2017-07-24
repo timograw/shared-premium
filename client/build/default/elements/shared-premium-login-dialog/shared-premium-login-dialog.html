@@ -1,0 +1,116 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/iron-cookie/iron-cookie.html">
+
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+
+<link rel="import" href="../shared-premium-style/shared-premium-style.html">
+
+<dom-module id="shared-premium-login-dialog">
+    <template>
+        <style include="shared-premium-style">
+            iron-icon,
+            div[suffix] {
+                color: hsl(0, 0%, 50%);
+                margin-right: 12px;
+            }
+
+            paper-button {
+                /* background: var(--secondary); */
+                color: var(--secondary);
+            }
+
+            paper-card {
+                width: 300px;
+                margin-top: 50px;
+                text-align: left;
+            }
+
+
+            #loginForm {}
+
+            .buttons {}
+        </style>
+
+        <iron-cookie name="session" value="{{session}}"></iron-cookie>
+
+        <iron-ajax url="/api/login" method="POST" content-type="application/json" body="{{ajaxParams}}" handle-as="json" on-response="handleResponse" on-error="handleError" id="loginRequest" last-response="{{session}}" last-error="{{error}}"></iron-ajax>
+
+        <iron-form id="loginForm">
+            <form method="get" action="/form/handler">
+                <paper-card>
+                    <div class="card-content">
+                        <div>
+                            <paper-input label="Username" required="" value="{{username}}">
+                                <iron-icon icon="mail" slot="prefix"></iron-icon>
+                            </paper-input>
+
+                            <paper-input label="Password" type="password" required="" value="{{password}}">
+                                <iron-icon icon="communication:vpn-key" slot="prefix"></iron-icon>
+                            </paper-input>
+                        </div>
+
+                    </div>
+                    <div class="card-actions buttons horizontal end-justified layout">
+                        <paper-button autofocus="" on-click="login">Login</paper-button>
+                    </div>
+                </paper-card>
+            </form>
+        </iron-form>
+    </template>
+
+    <script>
+        /**
+     * @customElement
+     * @polymer
+     */
+        class SharedPremiumLoginDialog extends Polymer.Element {
+            static get is() { return 'shared-premium-login-dialog'; }
+            static get properties() {
+                return {
+                    sessionid: {
+                        type: String
+                    },
+                    session: {
+                        type: Object,
+                        notify: true
+                    }
+                };
+            }
+
+            ready() {
+                super.ready();
+
+                // if (!this.sessionid)
+                //     this.$.loginDialog.open();
+            }
+
+            login() {
+                this.ajaxParams = JSON.stringify({
+                    username: this.username,
+                    password: this.password
+                });
+                this.$.loginRequest.generateRequest();
+            }
+
+            handleResponse(event) {
+                const req = event.detail; // iron-request
+                console.log('status', req.status, req.statusText);
+            }
+
+            handleError(event) {
+                const req = event.detail.request; // iron-request
+                console.log('status', req.status, req.statusText);
+            }
+        }
+
+        window.customElements.define(SharedPremiumLoginDialog.is, SharedPremiumLoginDialog);
+    </script>
+
+</dom-module>

@@ -1,0 +1,97 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+
+<link rel="import" href="../shared-premium-logo/shared-premium-logo-big.html">
+
+<link rel="import" href="../shared-premium-style/shared-premium-style.html">
+<link rel="import" href="../shared-premium-login-dialog/shared-premium-login-dialog.html">
+
+<dom-module id="shared-premium-splash">
+    <template>
+
+        <style include="shared-premium-style">
+            #splash {
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                z-index: 100;
+                background: var(--primary);
+            }
+
+            .window-centered {
+                position: fixed;
+
+                top: 50%;
+                left: 50%;
+                /* bring your own prefixes */
+                transform: translate(-50%, -50%);
+                text-align: center;
+            }
+
+            .centered {
+                display: inline-block;
+            }
+
+            .main-title {
+                @apply --paper-font-display2;
+                color: #fff;
+            }
+
+            shared-premium-login-dialog {
+                margin-top: 50px;
+            }
+
+            .hidden {
+                visibility: hidden;
+                opacity: 0;
+                transition: visibility 0s 0.5s, opacity 0.5s linear;
+            }
+        </style>
+
+        <div id="splash">
+            <div class="window-centered">
+                <div class="main-title">Shared Premium</div>
+                <div class="centered">
+                    <shared-premium-logo-big></shared-premium-logo-big>
+                </div>
+                <shared-premium-login-dialog session="{{session}}" hidden="[[loginHidden]]"></shared-premium-login-dialog>
+
+            </div>
+        </div>
+    </template>
+
+    <script>
+        /**
+     * @customElement
+     * @polymer
+     */
+        class SharedPremiumSplash extends Polymer.Element {
+            static get is() { return 'shared-premium-splash'; }
+            static get properties() {
+                return {
+                    session: {
+                        type: Object,
+                        notify: true,
+                        observer: '_sessionChanged'
+                    },
+                    loginHidden: {
+                        type: Boolean
+                    }
+                };
+            }
+
+            _sessionChanged(newValue, oldValue) {
+                if (newValue) {
+                    this.$.splash.classList.add('hidden');
+                }
+            }
+        }
+
+
+        window.customElements.define(SharedPremiumSplash.is, SharedPremiumSplash);
+    </script>
+
+</dom-module>

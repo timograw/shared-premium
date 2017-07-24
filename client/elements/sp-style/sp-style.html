@@ -1,0 +1,122 @@
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id='sp-style'>
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+       :root {
+        --primary: var(--paper-grey-500);
+        --primary-text: #fff;
+        --primary-light: #cfcfcf;
+        --primary-dark: #707070;
+
+        --secondary: var(--paper-orange-a400);
+        --secondary-text: black;
+        --secondary-light: #ffc246;
+        --secondary-light-text: black;
+        --secondary-dark: #c56200;
+        --secondary-dark-text: #fff;
+      }
+
+      paper-progress {
+        --paper-progress-active-color: var(--secondary);
+        --paper-progress-container-color: var(--secondary-light);
+      }
+
+      vaadin-grid {
+
+        /* font-family: Roboto, sans-serif; */
+        @apply --paper-font-body1;
+        --divider-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+
+        --vaadin-grid-cell: {
+          padding: 0;
+        }
+        ;
+
+        --vaadin-grid-header-cell: {
+          height: 64px;
+          color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+          font-size: 12px;
+        }
+        ;
+
+        --vaadin-grid-body-cell: {
+          height: 48px;
+          color: rgba(0, 0, 0, var(--dark-primary-opacity));
+          font-size: 13px;
+        }
+        ;
+
+        --vaadin-grid-body-row-hover-cell: {
+          background-color: var(--paper-grey-200);
+        }
+        ;
+
+        --vaadin-grid-body-row-selected-cell: {
+          background-color: var(--paper-grey-100);
+        }
+        ;
+
+        --vaadin-grid-focused-cell: {
+          box-shadow: none;
+          font-weight: bold;
+        }
+        ;
+      }
+
+      vaadin-grid .cell {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 56px;
+      }
+
+      vaadin-grid .cell.first {
+        padding-left: 24px;
+      }
+
+
+      vaadin-grid .cell.last {
+        padding-right: 24px;
+      }
+
+      vaadin-grid .cell.numeric {
+        text-align: right;
+      }
+
+      vaadin-grid paper-checkbox {
+        --primary-color: var(--paper-indigo-500);
+      }
+
+      vaadin-grid vaadin-grid-sorter {
+        --vaadin-grid-sorter-arrow: {
+          display: none !important;
+        }
+        ;
+      }
+
+      vaadin-grid vaadin-grid-sorter .cell {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      vaadin-grid vaadin-grid-sorter iron-icon {
+        transform: scale(0.8);
+      }
+
+      vaadin-grid vaadin-grid-sorter:not([direction]) iron-icon {
+        color: rgba(0, 0, 0, var(--dark-disabled-opacity));
+      }
+
+      vaadin-grid vaadin-grid-sorter[direction] {
+        color: rgba(0, 0, 0, var(--dark-primary-opacity));
+      }
+
+      vaadin-grid vaadin-grid-sorter[direction=desc] iron-icon {
+        transform: scale(0.8) rotate(180deg);
+      }
+    </style>
+  </template>
+</dom-module>

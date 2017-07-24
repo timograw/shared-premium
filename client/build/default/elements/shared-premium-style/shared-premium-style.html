@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="shared-premium-style">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+       :root {
+        --primary: var(--paper-grey-500);
+        --primary-text: #fff;
+        --primary-light: #cfcfcf;
+        --primary-dark: #707070;
+
+        --secondary: var(--paper-orange-a400);
+        --secondary-text: black;
+        --secondary-light: #ffc246;
+        --secondary-light-text: black;
+        --secondary-dark: #c56200;
+        --secondary-dark-text: #fff;
+      }
+
+      paper-progress {
+        --paper-progress-active-color: var(--secondary);
+        --paper-progress-container-color: var(--secondary-light);
+      }
+    </style>
+  </template>
+</dom-module>

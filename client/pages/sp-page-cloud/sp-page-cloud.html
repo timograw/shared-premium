@@ -1,0 +1,118 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/share-icons.html">
+
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
+
+<link rel="import" href="../../elements/sp-style/sp-style.html">
+<link rel="import" href="../../elements/paper-filesize/paper-filesize.html">
+
+<dom-module id="sp-page-cloud">
+  <template>
+
+    <style include="sp-style">
+      vaadin-grid {
+        height:100%
+      }
+
+      iron-icon {
+        color: var(--primary);
+      }
+
+      paper-icon-button {
+        color: var(--primary);
+      }
+
+      paper-icon-button[active] {
+        color: var(--secondary);
+      }
+    </style>
+
+    <iron-ajax url="/api/files"
+               method="GET"
+               content-type="application/json"
+               handle-as="json"
+               id="usersRequest"
+               last-response="{{files}}"               
+               last-error="{{error}}"
+               auto></iron-ajax>
+
+    <vaadin-grid items="[[files]]">
+
+      <vaadin-grid-column>
+        <template class="header">
+          <div class="cell first">
+            Name
+          </div>
+        </template>
+        <template>
+          <div class="cell first">
+            <iron-icon icon="[[_iconForType(item.type)]]"></iron-icon> [[item.name]]
+          </div>
+        </template>
+      </vaadin-grid-column>
+ 
+      <vaadin-grid-column width="125px" flex-grow="0">
+        <template class="header">
+          <div class="cell">
+            Size
+          </div>
+        </template>
+        <template>
+          <div class="cell">
+            <paper-filesize value="[[item.size]]"></paper-filesize>
+          </div>
+        </template>
+      </vaadin-grid-column>
+
+      <vaadin-grid-column width="125px" flex-grow="0">
+        <template class="header">
+          <div class="cell">
+            Actions
+          </div>
+        </template>
+        <template>
+          <div class="cell">
+            <paper-icon-button icon="social:share" toggles></paper-icon-button>
+          </div>
+        </template>
+      </vaadin-grid-column>
+
+    </vaadin-grid>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class SpPageCloud extends Polymer.Element {
+      static get is() { return 'sp-page-cloud'; }
+      static get properties() {
+        return {
+
+        };
+      }
+
+      _iconForType(type) {
+        if (type == 'folder') {
+          return 'icons:folder'
+        }
+        if (type == 'torrent') {
+          return 'editor:insert-drive-file'
+        }
+        return '?';
+      }
+    }
+
+    window.customElements.define(SpPageCloud.is, SpPageCloud);
+  </script>
+
+</dom-module>

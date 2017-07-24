@@ -18,9 +18,12 @@ router.get('/', function(req, res, next) {
 router.route('/accountinfo')
         .get(controller.get_account_information);
 
-router.route('/login').all(controller.login);
-// .get('/accountinfo', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
+router.route('/session').post(controller.post_session);
+router.route('/session').get(controller.get_session);
+
+router.route('/users').get(controller.get_users);
+
+router.route('/files').get(controller.get_files);
+
 
 module.exports = router;

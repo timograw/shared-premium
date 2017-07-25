@@ -38,6 +38,10 @@ exports.get_account_information = function (req, res) {
 };
 
 function populateSessionAndSendback(session, res) {
+    if (!session) {
+        res.cookie('sessionid', '').send("");
+        return;
+    }
     session.populate('user', function(err, session) {
         var result = {
             sessionid: session.uuid,
@@ -75,6 +79,16 @@ exports.get_session = function(req, res) {
     });
 };
 
+exports.delete_session = function(req, res) {
+    var sessionid = req.cookies.sessionid;
+
+    sessionManager.loadSession(sessionid, function(session) {
+        session.remove(function(err) {
+            res.clearCookie('sessionid').send('Loggedout');
+        });
+    });
+};
+
 exports.get_users = function(req, res) {
     authenticate(req, res, function(req, res, session) {
         User.find({}).lean().exec(function(err, users) {
@@ -94,7 +108,8 @@ exports.get_files = function(req, res) {
     authenticate(req, res, function(req, res, session) {
         premiumize.listDirectory(null, response => {
             var ret = new LINQ(response.content)
-                // .Where(entry => { return (entry.type == 'folder') })
+                .Where(entry => { return (entry.type != 'folder') })
+                .OrderByDescending(function(entry) { return entry.created_at;})
                 .Select(entry => { return {
                     id: entry.id,
                     name: entry.name,

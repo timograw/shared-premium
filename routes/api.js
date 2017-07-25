@@ -18,8 +18,10 @@ router.get('/', function(req, res, next) {
 router.route('/accountinfo')
         .get(controller.get_account_information);
 
-router.route('/session').post(controller.post_session);
-router.route('/session').get(controller.get_session);
+router.route('/session')
+  .get(controller.get_session)
+  .post(controller.post_session)
+  .delete(controller.delete_session);
 
 router.route('/users').get(controller.get_users);
 

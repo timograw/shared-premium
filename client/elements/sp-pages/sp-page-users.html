@@ -3,7 +3,6 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
-<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 
 <link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
@@ -22,7 +21,7 @@
     <iron-ajax url="/api/users" method="GET" content-type="application/json" handle-as="json" id="usersRequest" last-response="{{users}}"
       last-error="{{error}}" auto></iron-ajax>
 
-    <vaadin-grid aria-label="Basic Binding Example" items="[[users]]">
+    <vaadin-grid aria-label="Basic Binding Example" items="[[users]]" hidden="[[!users]]">
 
       <vaadin-grid-column>
         <template class="header">

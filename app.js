@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var compression = require('compression');
 var mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost/shared-premium', {
@@ -14,6 +15,8 @@ var index = require('./routes/index');
 var api = require('./routes/api');
 
 var app = express();
+
+app.use(compression());
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));

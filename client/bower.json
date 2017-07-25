@@ -28,7 +28,8 @@
     "iron-cookie": "wincinderith/iron-cookie",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "vaadin-grid": "^3.0.0",
-    "paper-checkbox": "^2.0.1"
+    "paper-checkbox": "^2.0.1",
+    "iron-lazy-pages": "^2.0.2"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",

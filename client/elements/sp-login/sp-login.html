@@ -5,14 +5,14 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
 
-
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 <link rel="import" href="../sp-style/sp-style.html">
 
-<dom-module id="shared-premium-login-dialog">
+<dom-module id="sp-login">
     <template>
         <style include="sp-style">
             iron-icon,
@@ -38,8 +38,16 @@
             .buttons {}
         </style>
 
-        <iron-ajax url="/api/session" method="POST" content-type="application/json" body="{{ajaxParams}}" handle-as="json" on-response="handleResponse"
-            on-error="handleError" id="loginRequest" last-response="{{session}}" last-error="{{error}}"></iron-ajax>
+        <iron-ajax url="/api/session"
+                   method="POST" 
+                   content-type="application/json" 
+                   body="{{ajaxParams}}" 
+                   handle-as="json" 
+                   on-response="handleResponse"
+                   on-error="handleError" 
+                   id="loginRequest" 
+                   last-response="{{session}}" 
+                   last-error="{{error}}"></iron-ajax>
 
         <iron-form id="loginForm">
             <form method="get" action="/form/handler">
@@ -70,8 +78,8 @@
      * @customElement
      * @polymer
      */
-        class SharedPremiumLoginDialog extends Polymer.Element {
-            static get is() { return 'shared-premium-login-dialog'; }
+        class SpLogin extends Polymer.Element {
+            static get is() { return 'sp-login'; }
             static get properties() {
                 return {
                     sessionid: {
@@ -111,7 +119,7 @@
             }
         }
 
-        window.customElements.define(SharedPremiumLoginDialog.is, SharedPremiumLoginDialog);
+        window.customElements.define(SpLogin.is, SpLogin);
     </script>
 
 </dom-module>

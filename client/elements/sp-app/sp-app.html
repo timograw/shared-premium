@@ -1,13 +1,11 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<link rel="import" href="../shared-premium-splash/shared-premium-splash.html">
-
 <!-- Iron elements -->
-<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html"> 
 
 <!-- Paper elements -->
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
@@ -16,29 +14,25 @@
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
-
 <!-- App elements -->
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 
 <link rel="import" href="../../bower_components/pushstate-anchor/pushstate-anchor.html">
 
-<link rel="import" href="../shared-premium-logo/shared-premium-logo.html">
-<link rel="import" href="../shared-premium-account/shared-premium-account.html">
-
-<link rel="import" href="../../pages/shared-premium-page-dashboard/shared-premium-page-dashboard.html">
-<link rel="import" href="../../pages/sp-page-cloud/sp-page-cloud.html">
-<link rel="import" href="../../pages/sp-page-users/sp-page-users.html">
+<link rel="import" href="../sp-logo/sp-logo.html">
 
 <link rel="import" href="../shared-premium-widgets/shared-premium-usage.html">
 
 <link rel="import" href="../sp-style/sp-style.html">
+
 
 
 <dom-module id="sp-app">
@@ -127,26 +121,32 @@
         height: 20px;
         background-color: var(--primary-dark);
       }
-    </style>
 
-    <shared-premium-splash session="{{session}}"></shared-premium-splash>
+      .title {
+        @apply --paper-font-title;
+        color: var(--primary-dark);
+      }
+    </style>
 
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
 
-    <shared-premium-account session="{{session}}"></shared-premium-account>
+    
+    <iron-ajax id="logoutRequest"
+               url="/api/session"
+               method="DELETE"
+               on-response="_handleLogoutResponse"
+               handle-as="json"></iron-ajax>
 
     <app-drawer-layout>
-
       <app-drawer slot="drawer">
-
         <app-header-layout has-scrolling-region>
 
-          <app-header class="whiteHeader" waterfall fixed slot="header">
+          <app-header class="whiteHeader" fixed slot="header">
             <app-toolbar>
-              <shared-premium-logo></shared-premium-logo>
-              <div main-title>Shared Premium</div>
+              <sp-logo></sp-logo>
+              <div class="title" main-title>Shared Premium</div>
             </app-toolbar>
           </app-header>
 
@@ -166,6 +166,9 @@
                 <iron-icon icon="social:person" slot="item-icon"></iron-icon> <span>Users</span>
               </paper-icon-item>
             </a>
+            <paper-icon-item on-tap="logout">
+              <iron-icon icon="social:person" slot="item-icon"></iron-icon> <span>Logout</span>
+            </paper-icon-item>
           </paper-listbox>
 
 
@@ -190,15 +193,16 @@
 
         <div class="content">
           <iron-pages selected="[[routeData.page]]" attr-for-selected="name" fallback-selection="view404" role="main" selected-item="{{currentPage}}">
-            <shared-premium-page-dashboard name="" title="Dashboard"></shared-premium-page-dashboard>
-            <sp-page-cloud name="cloud" title="Cloud"></sp-page-cloud>
-            <sp-page-users name="users" title="Users"></sp-page-users>
+            <sp-page-dashboard name="" title="Dashboard" data-path="/elements/sp-pages/sp-page-dashboard.html"></sp-page-dashboard>
+            <sp-page-cloud name="cloud" title="Cloud" data-path="/elements/sp-pages/sp-page-cloud.html"></sp-page-cloud>
+            <sp-page-users name="users" title="Users" data-path="/elements/sp-pages/sp-page-users.html"></sp-page-users>
           </iron-pages>
         </div>
 
       </app-header-layout>
 
     </app-drawer-layout>
+
 
   </template>
 
@@ -218,12 +222,36 @@
           session: {
             type: Object,
             notify: true
+          },
+          sessionid: {
+            type: String,
+            notify: true
+          },
+          currentPage: {
+            type: String,
+            observer: '_currentPageChanged'
           }
         };
       }
 
       json(obj) {
         return JSON.stringify(obj)
+      }
+
+      _currentPageChanged(newPage, oldPage) {
+        if (newPage) {
+          var path = newPage.getAttribute('data-path');
+          Polymer.Base.importHref(path, null, null, true);
+          console.log('Loading path ' + path);
+        }
+      }
+
+      logout() {
+        this.$.logoutRequest.generateRequest();
+      }
+
+      _handleLogoutResponse() {
+        location.reload();        
       }
     }
 

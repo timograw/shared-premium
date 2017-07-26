@@ -192,10 +192,10 @@
         </app-header>
 
         <div class="content">
-          <iron-pages selected="[[routeData.page]]" attr-for-selected="name" fallback-selection="view404" role="main" selected-item="{{currentPage}}">
-            <sp-page-dashboard name="" title="Dashboard" data-path="/elements/sp-pages/sp-page-dashboard.html"></sp-page-dashboard>
-            <sp-page-cloud name="cloud" title="Cloud" data-path="/elements/sp-pages/sp-page-cloud.html"></sp-page-cloud>
-            <sp-page-users name="users" title="Users" data-path="/elements/sp-pages/sp-page-users.html"></sp-page-users>
+          <iron-pages selected="[[routeData.page]]" attr-for-selected="page" fallback-selection="view404" role="main" selected-item="{{currentPage}}">
+            <sp-page-dashboard page="" title="Dashboard" data-path="/elements/sp-pages/sp-page-dashboard.html"></sp-page-dashboard>
+            <sp-page-cloud page="cloud" title="Cloud" data-path="/elements/sp-pages/sp-page-cloud.html"></sp-page-cloud>
+            <sp-page-users page="users" title="Users" data-path="/elements/sp-pages/sp-page-users.html"></sp-page-users>
           </iron-pages>
         </div>
 
@@ -242,7 +242,7 @@
         if (newPage) {
           var path = newPage.getAttribute('data-path');
           Polymer.Base.importHref(path, null, null, true);
-          console.log('Loading path ' + path);
+          console.log('Loading page ' + path);
         }
       }
 

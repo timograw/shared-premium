@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var compression = require('compression');
 var mongoose = require('mongoose');
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/shared-premium', {
   useMongoClient: true
 });

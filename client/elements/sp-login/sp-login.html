@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
@@ -22,7 +23,6 @@
             }
 
             paper-button {
-                /* background: var(--secondary); */
                 color: var(--secondary);
             }
 
@@ -30,12 +30,20 @@
                 width: 300px;
                 margin-top: 50px;
                 text-align: left;
+
             }
 
+            .expand {
+                   animation-name: example;
+    animation-duration: 750ms;
+    animation-timing-function: ease;
+            }
 
-            #loginForm {}
+            @keyframes example {
+    0%   {max-height: 0px}
 
-            .buttons {}
+    100% {max-height: 320px}
+}
         </style>
 
         <iron-ajax url="/api/session"
@@ -43,32 +51,31 @@
                    content-type="application/json" 
                    body="{{ajaxParams}}" 
                    handle-as="json" 
-                   on-response="handleResponse"
                    on-error="handleError" 
                    id="loginRequest" 
-                   last-response="{{session}}" 
-                   last-error="{{error}}"></iron-ajax>
+                   last-response="{{session}}"></iron-ajax>
 
         <iron-form id="loginForm">
             <form method="get" action="/form/handler">
+                <div class="expand">
                 <paper-card>
                     <div class="card-content">
                         <div>
-                            <paper-input label="Username" required value="{{username}}" tabindex="1" autofocus>
+                            <paper-input label="Username" required value="{{username}}" tabindex="1" autofocus id="username">
                                 <iron-icon icon="mail" slot="prefix"></iron-icon>
                             </paper-input>
 
-                            <paper-input label="Password" type="password" required value="{{password}}"  tabindex="2"> 
+                            <paper-input label="Password" type="password" required value="{{password}}"  tabindex="2" id="password"> 
                                 <iron-icon icon="communication:vpn-key" slot="prefix"></iron-icon>
                             </paper-input>
                         </div>
 
                     </div>
                     <div class="card-actions buttons horizontal end-justified layout">
-                        <paper-button autofocus on-click="login">Login</paper-button>
-                        <core-a11y-keys keys="enter" on-keys-pressed="login"></core-a11y-keys>
+                        <paper-button autofocus on-click="_login">Login</paper-button>
                     </div>
                 </paper-card>
+                </div>
             </form>
         </iron-form>
     </template>
@@ -78,7 +85,7 @@
      * @customElement
      * @polymer
      */
-        class SpLogin extends Polymer.Element {
+        class SpLogin extends Polymer.mixinBehaviors([Polymer. IronA11yKeysBehavior], Polymer.Element) {
             static get is() { return 'sp-login'; }
             static get properties() {
                 return {
@@ -89,18 +96,29 @@
                     session: {
                         type: Object,
                         notify: true
+                    },
+                    username: {
+                        type: String,
+                        observer: "_usernameChanged"
+                    },
+                    password: {
+                        type: String,
+                        observer: "_passwordChanged"
                     }
                 };
             }
 
+            get keyBindings() {
+                return {
+                    'enter:keypress': '_login'
+                }
+            } 
+
             ready() {
                 super.ready();
-
-                // if (!this.sessionid)
-                //     this.$.loginDialog.open();
             }
 
-            login() {
+            _login() {
                 this.ajaxParams = JSON.stringify({
                     username: this.username,
                     password: this.password
@@ -108,15 +126,21 @@
                 this.$.loginRequest.generateRequest();
             }
 
-            handleResponse(event) {
-                const req = event.detail; // iron-request
-                console.log('status', req.status, req.statusText);
+            handleError(event) {
+                if (event.detail.request.xhr.response.error) {
+                    this.$.username.invalid = true;
+                    this.$.password.invalid = true;
+                }
             }
 
-            handleError(event) {
-                const req = event.detail.request; // iron-request
-                console.log('status', req.status, req.statusText);
+            _usernameChanged() {
+                this.$.username.invalid = false;
             }
+
+            _passwordChanged() {
+                this.$.password.invalid = false;
+            }
+
         }
 
         window.customElements.define(SpLogin.is, SpLogin);

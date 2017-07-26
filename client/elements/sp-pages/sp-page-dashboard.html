@@ -1,7 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 <dom-module id="sp-page-dashboard">
     <template>
@@ -11,16 +13,21 @@
             }
 
             paper-card.downloadlink {
-                height: 175px;
-                width: 500px;
+                width: 100%;
             }
         </style>
+
+        <paper-card class="downloadlink">
+            <div class="card-content">
+                <paper-input label="Torrent link" always-float-label>
+                    <iron-icon icon="file-download" slot="prefix"></iron-icon>
+                </paper-input>
+            </div>
+        </paper-card>
+
         <paper-card style="color: #fff" image="../../img/draco.jpg" heading="Hic sunt draconis" class="white">
         </paper-card>
-  
-         <paper-card class="downloadlink">
-            Download
-        </paper-card>   
+
 
     </template>
 

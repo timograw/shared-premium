@@ -30,27 +30,22 @@ function authenticate(req, res, callback) {
     });
 };
 
-function authenticateAsync(req, res, needAdmin) {
-    return new Promise(function(resolve, reject) {
-        var sessionid = req.cookies.sessionid;
-        sessionManager.loadSession(sessionid).then(function(session) {
-            if (!session) {
-                res.sendStatus(403);
-                reject()
-            }
-            else
-                session.populate('user', function(err, session) {
-                    if (err) throw reject(err);
+async function authenticateAsync(req, res, needAdmin) {
+    var sessionid = req.cookies.sessionid;
 
-                    if (needAdmin && !session.user.is_admin) {
-                        res.sendStatus(403);
-                        reject();
-                    }
-                    resolve(session)
-                });
-        });
-    })
+    var session = await sessionManager.loadSession(sessionid)
+    if (!session) {
+        res.sendStatus(403);
+        throw new Error("Authentication failed");
+    }
+    
+    session = await session.populate('user');
 
+    if (needAdmin && !session.user.is_admin) {
+        res.sendStatus(403);
+        throw new Error("Authentication failed");
+    }
+    return session;
 };
 
 
@@ -127,14 +122,14 @@ exports.get_users = function(req, res) {
     })
     .then(function(users) {
         
-            var test = new LINQ(users).Select(function(user) { return {
-                id: user._id,
-                username: user.username,
-                is_admin: user.is_admin
-            }}).ToArray();
+        var test = new LINQ(users).Select(function(user) { return {
+            id: user._id,
+            username: user.username,
+            is_admin: user.is_admin
+        }}).ToArray();
 
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify(test));
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(test));
     })
     .catch(function(err){
         res.sendStatus(500);

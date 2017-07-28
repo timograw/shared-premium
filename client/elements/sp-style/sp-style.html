@@ -1,7 +1,8 @@
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../elements/paper-filesize/paper-filesize.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
-<dom-module id='sp-style'>
+<dom-module id="sp-style">
   <template>
     <style include="iron-flex iron-flex-alignment">
        :root {
@@ -116,6 +117,10 @@
 
       vaadin-grid vaadin-grid-sorter[direction=desc] iron-icon {
         transform: scale(0.8) rotate(180deg);
+      }
+
+      iron-icon {
+        --iron-icon-fill-color: var(--primary);
       }
     </style>
   </template>

@@ -27,5 +27,11 @@ router.route('/users').get(controller.get_users);
 
 router.route('/files').get(controller.get_files);
 
+router.route('/premiumize/files').get(controller.get_premiumize_files);
+
+router.route('/premiumize/file/:id').post(controller.post_premiumize_file);
+
+//router.route('/files').get(controller.get_files);
+
 
 module.exports = router;

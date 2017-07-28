@@ -5,7 +5,7 @@
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../bower_components/iron-pages/iron-pages.html"> 
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <!-- Paper elements -->
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
@@ -132,12 +132,8 @@
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
 
-    
-    <iron-ajax id="logoutRequest"
-               url="/api/session"
-               method="DELETE"
-               on-response="_handleLogoutResponse"
-               handle-as="json"></iron-ajax>
+
+    <iron-ajax id="logoutRequest" url="/api/session" method="DELETE" on-response="_handleLogoutResponse" handle-as="json"></iron-ajax>
 
     <app-drawer-layout>
       <app-drawer slot="drawer">
@@ -158,7 +154,12 @@
             </a>
             <a href="/cloud" tabindex="-1">
               <paper-icon-item>
-                <iron-icon icon="icons:file-download" slot="item-icon"></iron-icon> <span>Cloud</span>
+                <iron-icon icon="icons:folder" slot="item-icon"></iron-icon> <span>Cloud</span>
+              </paper-icon-item>
+            </a>
+            <a href="/premiumize" tabindex="-1" hidden={{!session.user.is_admin}}>
+              <paper-icon-item>
+                <iron-icon icon="icons:folder" slot="item-icon"></iron-icon> <span>Premiumize</span>
               </paper-icon-item>
             </a>
             <a href="/users" tabindex="-1" hidden={{!session.user.is_admin}}>
@@ -167,7 +168,7 @@
               </paper-icon-item>
             </a>
             <paper-icon-item on-tap="logout">
-              <iron-icon icon="social:person" slot="item-icon"></iron-icon> <span>Logout</span>
+              <iron-icon icon="icons:eject" slot="item-icon"></iron-icon> <span>Logout</span>
             </paper-icon-item>
           </paper-listbox>
 
@@ -187,13 +188,14 @@
         <app-header slot="header" fixed effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div main-title>[[currentPage.title]]</div>
+            <!-- <div main-title>[[currentPage.title]]</div> -->
           </app-toolbar>
         </app-header>
 
         <div class="content">
           <iron-pages selected="[[routeData.page]]" attr-for-selected="page" fallback-selection="view404" role="main" selected-item="{{currentPage}}">
             <sp-page-dashboard page="" title="Dashboard" data-path="/elements/sp-pages/sp-page-dashboard.html"></sp-page-dashboard>
+            <sp-page-premiumize page="premiumize" title="Premiumize" data-path="/elements/sp-pages/sp-page-premiumize.html"></sp-page-premiumize>
             <sp-page-cloud page="cloud" title="Cloud" data-path="/elements/sp-pages/sp-page-cloud.html"></sp-page-cloud>
             <sp-page-users page="users" title="Users" data-path="/elements/sp-pages/sp-page-users.html"></sp-page-users>
           </iron-pages>
@@ -251,7 +253,7 @@
       }
 
       _handleLogoutResponse() {
-        location.reload();        
+        location.reload();
       }
     }
 

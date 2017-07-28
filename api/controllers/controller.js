@@ -18,7 +18,7 @@ var LINQ = require('node-linq').LINQ;
 // Authenticates users and only calls callback if authenticated
 function authenticate(req, res, callback) {
     var sessionid = req.cookies.sessionid;
-    sessionManager.loadSession(sessionid, function(session) {
+    sessionManager.loadSession(sessionid).then(function(session) {
         if (!session)
             res.sendStatus(403);
         else
@@ -30,10 +30,10 @@ function authenticate(req, res, callback) {
     });
 };
 
-function authenticateAsync(req, res) {
+function authenticateAsync(req, res, needAdmin) {
     return new Promise(function(resolve, reject) {
         var sessionid = req.cookies.sessionid;
-        sessionManager.loadSession(sessionid, function(session) {
+        sessionManager.loadSession(sessionid).then(function(session) {
             if (!session) {
                 res.sendStatus(403);
                 reject()
@@ -42,6 +42,10 @@ function authenticateAsync(req, res) {
                 session.populate('user', function(err, session) {
                     if (err) throw reject(err);
 
+                    if (needAdmin && !session.user.is_admin) {
+                        res.sendStatus(403);
+                        reject();
+                    }
                     resolve(session)
                 });
         });
@@ -52,7 +56,7 @@ function authenticateAsync(req, res) {
 
 function populateSessionAndSendback(session, res) {
     if (!session) {
-        res.cookie('sessionid', '').send("");
+        res.clearCookie('sessionid').send('Loggedout');
         return;
     }
     session.populate('user', function(err, session) {
@@ -71,7 +75,8 @@ function populateSessionAndSendback(session, res) {
 
 exports.get_account_information = function (req, res) {
     authenticate(req, res, function(req, res, session) {
-        premiumize.accountInformation().then(function (json) {
+        premiumize.accountInformation().
+        then(function (json) {
             res.setHeader('Content-Type', 'application/json');
             res.send(json);
         });
@@ -98,7 +103,8 @@ exports.post_session = function (req, res) {
 exports.get_session = function(req, res) {
     var sessionid = req.cookies.sessionid;
 
-    sessionManager.loadSession(sessionid, function(session) {
+    sessionManager.loadSession(sessionid)
+    .then(function(session) {
         populateSessionAndSendback(session, res);
     });
 };
@@ -106,7 +112,8 @@ exports.get_session = function(req, res) {
 exports.delete_session = function(req, res) {
     var sessionid = req.cookies.sessionid;
 
-    sessionManager.loadSession(sessionid, function(session) {
+    sessionManager.loadSession(sessionid)
+    .then(function(session) {
         session.remove(function(err) {
             res.clearCookie('sessionid').send('Loggedout');
         });
@@ -114,7 +121,7 @@ exports.delete_session = function(req, res) {
 };
 
 exports.get_users = function(req, res) {
-    authenticateAsync(req, res)
+    authenticateAsync(req, res, true)
     .then(function(session) {
         return User.find({}).lean().exec();
     })
@@ -128,38 +135,67 @@ exports.get_users = function(req, res) {
 
             res.setHeader('Content-Type', 'application/json');
             res.send(JSON.stringify(test));
+    })
+    .catch(function(err){
+        res.sendStatus(500);
+    });
+};
+
+exports.get_files = function(req, res) {
+    authenticateAsync(req, res)
+    .then(function(session) {
+        return Torrent.find({is_shared: true}).lean().exec();
+    })
+    .then(function(torrents) {
         
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(torrents));
     })
 
 };
 
-exports.get_files = function(req, res) {
+
+
+exports.get_premiumize_files = function(req, res) {
     authenticate(req, res, function(req, res, session) {
         premiumize.listDirectory(null, response => {
             var entries = new LINQ(response.content)
                 .Where(entry => { return (entry.type != 'folder') })
                 .OrderByDescending(function(entry) { return entry.created_at;})
                 .Select(entry => { return {
-                    id: entry.id,
+                    pid: entry.id,
                     name: entry.name,
                     size: entry.size,
                     hash: entry.hash,
                     type: entry.type
                 }}).ToArray();
 
+            var promises = new Array();
             for(var entry of entries) {
-                var torrent = new Torrent({
-                    pid: entry.id,
-                    name: entry.name,
-                    size: entry.size,
-                    hash: entry.hash,
-                    type: entry.type
-                })
-                
+                promises.push(Torrent.findOneAndUpdate({"pid": entry.pid}, entry, {upsert: true}).lean().exec());
             }
 
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify(entries));
+            Promise.all(promises)
+            .then(function(values) {
+                res.setHeader('Content-Type', 'application/json');
+                res.send(JSON.stringify(values));
+            })
+
         });
+    });
+};
+
+exports.post_premiumize_file = function(req, res) {
+    var pid = req.params.id;
+    authenticateAsync(req, res, true)
+    .then(function(session) {
+        return Torrent.findOneAndUpdate({"pid": pid}, req.body); //{"is_shared": true}
+    })
+    .then(function() {
+        res.sendStatus(200);
+    })
+    .catch(function(err) {
+        res.status(500);
+        throw(err);
     });
 };

@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
 
 var TorrentSchema = Schema({
     pid: {
-        type: String
+        type: Number
     },
     hash: {
         type: String
@@ -14,8 +14,14 @@ var TorrentSchema = Schema({
     type: {
         type: String
     },
+    size: {
+        type: Number
+    },
     path: {
         type: String
+    },
+    is_shared: {
+        type: Boolean
     }
 });
 

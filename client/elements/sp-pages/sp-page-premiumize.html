@@ -17,7 +17,7 @@
 <link rel="import" href="../../elements/sp-style/sp-style.html">
 
 
-<dom-module id="sp-page-cloud">
+<dom-module id="sp-page-premiumize">
   <template>
 
     <style include="sp-style">
@@ -27,14 +27,6 @@
 
       iron-icon {
         color: var(--primary);
-      }
-
-      paper-icon-button {
-        color: var(--primary);
-      }
-
-      paper-icon-button[active] {
-        color: var(--secondary);
       }
 
       .avatar {
@@ -55,10 +47,17 @@
         background: #fff;
       }
 
+      paper-avatar {
+        --paper-avatar-background: var(--secondary);
+      }
 
+      paper-icon-item {
+        
+        border-bottom: 1px solid #e0e0e0;
+      }
     </style>
 
-    <iron-ajax url="/api/files" method="GET" content-type="application/json" handle-as="json" id="usersRequest" last-response="{{files}}"
+    <iron-ajax url="/api/premiumize/files" method="GET" content-type="application/json" handle-as="json" id="usersRequest" last-response="{{files}}"
       last-error="{{error}}" auto></iron-ajax>
 
 
@@ -75,8 +74,8 @@
      * @customElement
      * @polymer
      */
-    class SpPageCloud extends Polymer.Element {
-      static get is() { return 'sp-page-cloud'; }
+    class SpPagePremiumize extends Polymer.Element {
+      static get is() { return 'sp-page-premiumize'; }
       static get properties() {
         return {
 
@@ -95,7 +94,7 @@
 
     }
 
-    window.customElements.define(SpPageCloud.is, SpPageCloud);
+    window.customElements.define(SpPagePremiumize.is, SpPagePremiumize);
   </script>
 
 </dom-module>

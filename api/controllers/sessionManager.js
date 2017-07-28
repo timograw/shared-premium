@@ -37,16 +37,18 @@ exports.login = function (username, password, callback) {
     })
 };
 
-exports.loadSession = function(sessionid, callback) {
-    Session.findOne({"uuid": sessionid}).exec(function(err, session) {
-        if (err) throw err;
+exports.loadSession = function(sessionid) {
+    return new Promise(function(resolve, reject) {
+        Session.findOne({"uuid": sessionid}).exec(function(err, session) {
+            if (err) throw resolve(err);
 
-        if (!session) {
-            console.log("Session not found: " + sessionid);
-            callback(null);
-        }
+            if (!session) {
+                console.log("Session not found: " + sessionid);
+                resolve(null);
+            }
 
-        callback(session);
+            resolve(session);
+        });
     });
 };
 

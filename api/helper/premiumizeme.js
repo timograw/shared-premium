@@ -47,23 +47,19 @@ exports.PremiumizeMe = class PremiumizeMe{
 
     }
 
-    listDirectory(id, callback) {
+    async listDirectory(id) {
         var url = 'https://www.premiumize.me/api/folder/list?' + this._defaultQueryString();
         if (id) url = url + '&id=' + id
 
-        fetch(url, {
+        var response = await fetch(url, {
             method: 'GET',
             headers: {
                 'customer_id': this.configuration.customer_id,
                 'pin': this.configuration.pin
             },
             body: '{}'
-        }).then(response => {
-            return response.json();
-        }).then(function(json) {
-            callback(json);
-        }).catch(err => {
-            console.log(err);
         })
+        
+        return response.json();
     }
 }

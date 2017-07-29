@@ -7,13 +7,17 @@ var bodyParser = require('body-parser');
 var compression = require('compression');
 var mongoose = require('mongoose');
 
+var premiumize = require('./api/controllers/premiumize');
+var session = require('./api/controllers/session');
+var userController = require('./api/controllers/userController');
+
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/shared-premium', {
   useMongoClient: true
 });
 
 var index = require('./routes/index');
-var api = require('./routes/api');
+//var api = require('./routes/api');
 
 var app = express();
 
@@ -45,7 +49,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/', express.static(path.join(__dirname, 'client'), options));
 //app.use('/', express.static(path.join(__dirname, 'client/build/default'), options));
-app.use('/api', api);
+
+app.use('/api/premiumize', premiumize);
+app.use('/api', session);
+app.use('/api', userController);
 
 app.get('*', function (req, res) {
   if (req.url.endsWith(".html")) {
@@ -80,6 +87,9 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+
+  console.log('Error: ' + err.message);
+  console.log(err.stack);
 });
 
 module.exports = app;

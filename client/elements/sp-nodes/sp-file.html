@@ -1,0 +1,95 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+
+<link rel="import" href="../sp-style/sp-style.html">
+
+<dom-module id="sp-file">
+    <template>
+        <style include="sp-style">
+            paper-card {
+                display: block;
+            }
+
+            ul {
+                list-style-type: none;
+            }
+        </style>
+
+        <template is="dom-if" if="[[_isDir(node)]]">
+            <paper-icon-item style$="padding-left: [[_paddingForDepth(depth)]]px">
+                <iron-icon icon="icons:folder" slot="item-icon"></iron-icon>
+                <div class="layout horizontal justified" style="width: 100%">
+                    <div>[[node.name]]</div>
+                    <!-- <div class="flex"></div> -->
+                    <div>
+                        <paper-filesize value="[[node.size]]"></paper-filesize>
+                    </div>
+                </div>
+                <paper-icon-button icon="icons:archive" alt="Download folder zipped"></paper-icon-button>
+            </paper-icon-item>
+            <template is="dom-repeat" items="[[node.children]]">
+                <sp-file node="[[item]]" depth="[[_inc(depth)]]"></sp-file>
+            </template>
+        </template>
+
+        <template is="dom-if" if="[[_isFile(node)]]">
+            <paper-icon-item style$="padding-left: [[_paddingForDepth(depth)]]px">
+                <iron-icon icon="editor:insert-drive-file" slot="item-icon"></iron-icon>
+                <div class="layout horizontal justified" style="width: 100%">
+                    <div>[[node.name]]</div>
+                    <!-- <div class="flex"></div> -->
+                    <div>
+                        <paper-filesize value="[[node.size]]"></paper-filesize>
+                    </div>
+                </div>
+                <paper-icon-button icon="icons:file-download" alt="Download file"></paper-icon-button>
+            </paper-icon-item>
+        </template>
+
+    </template>
+
+    <script>
+        /**
+     * @customElement
+     * @polymer
+     */
+        class SpFile extends Polymer.Element {
+            static get is() { return 'sp-file'; }
+            static get properties() {
+                return {
+                    node: {
+                        type: Object
+                    },
+                    basePath: {
+                        type: String
+                    },
+                    depth: {
+                        type: Number
+                    }
+                };
+            }
+
+            _isDir(node) {
+                return node.type == 'dir';
+            }
+
+            _isFile(node) {
+                return node.type == 'file';
+            }
+
+            _inc(num) {
+                return num + 1;
+            }
+
+            _paddingForDepth(depth) {
+                return 16 + depth * 32
+            }
+        }
+
+        window.customElements.define(SpFile.is, SpFile);
+    </script>
+
+</dom-module>

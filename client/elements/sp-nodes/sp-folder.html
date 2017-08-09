@@ -1,0 +1,127 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/device-icons.html">
+
+<link rel="import" href="../../bower_components/paper-avatar/paper-avatar.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+
+<link rel="import" href="../../elements/paper-filesize/paper-filesize.html">
+
+<link rel="import" href="../sp-style/sp-style.html">
+
+<link rel="import" href="sp-folder-item.html">
+<link rel="import" href="sp-node-breadcrumbs.html">
+
+<dom-module id="sp-folder">
+    <template>
+        <style include="sp-style">
+            paper-avatar {
+                --paper-avatar-background: var(--secondary);
+            }
+
+            paper-icon-item {
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            paper-icon-button {
+                color: var(--primary);
+            }
+
+            paper-icon-button[active] {
+                color: var(--secondary);
+            }
+
+            .hidden {
+                opacity: 0;
+            }
+
+            .fadein {
+                animation: fadein 300ms;
+            }
+
+            @keyframes fadein {
+                from {
+                    opacity: 0;
+                    transform: translate(0, 0)
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+        </style>
+
+        <sp-node-breadcrumbs base-path="[[basePath]]" path="[[node.path]]"></sp-node-breadcrumbs>
+
+        <iron-list items="[[node.children]]" on-selected-item-changed="_onNodeChange">
+            <template>
+                <div class="">
+                    <sp-folder-item base-path="/files" item="[[item]]" session="[[session]]"></sp-folder-item>
+                </div>
+            </template>
+        </iron-list>
+    </template>
+
+    <script>
+        /**
+     * @customElement
+     * @polymer
+     */
+        class SpFolder extends Polymer.Element {
+            static get is() { return 'sp-folder'; }
+            static get properties() {
+                return {
+                    node: {
+                        type: Object
+                    },
+                    basePath: {
+                        type: String
+                    },
+                    session: {
+                        type: Object
+                    }
+                };
+            }
+
+            _stringify(obj) {
+                return JSON.stringify(obj);
+            }
+
+            _parsePath(path) {
+                var crumbs = [{
+                    href: "",
+                    label: "Files"
+                }]
+                var tokens = path.split('/');
+                for (var i = 0; i < tokens.length; i++) {
+                    if (tokens[i])
+                        crumbs.push({
+                            href: tokens[i],
+                            label: tokens[i]
+                        });
+                }
+
+                console.log(JSON.stringify(crumbs));
+                return crumbs;
+            }
+
+            _onNodeChange() {
+                // var all = this.shadowRoot.getElementsByTagName("sp-folder-item");
+                // for(var i = 0, max = all.length; i < max; i++) 
+                // {
+                //     //alert(all[i].innerHTML);
+                //     setTimeout(function () {
+                //         all[i].className += "fadein"
+                //     }, 1000);
+                // }
+            }
+        }
+
+        window.customElements.define(SpFolder.is, SpFolder);
+    </script>
+
+</dom-module>

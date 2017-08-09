@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
@@ -13,7 +14,7 @@
 
 <link rel="import" href="../sp-style/sp-style.html">
 
-<dom-module id="sp-file-item">
+<dom-module id="sp-folder-item">
     <template>
         <style include="sp-style">
             paper-avatar {
@@ -32,22 +33,32 @@
                 color: var(--secondary);
             }
 
-            paper-icon-item:hover {}
+            paper-item-body {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         </style>
 
         <paper-icon-item>
             <paper-avatar label="T" mini slot="item-icon"></paper-avatar>
+            
             <paper-item-body two-line>
-                <div>{{item.name}}test</div>
+                <div><a href="[[_buildUrl(item)]]">[[item.name]]</a></div>
                 <div secondary>
-                    {{_typeToString(item.type)}}
-                    <paper-filesize value="{{item.size}}"></paper-filesize>
+                    [[_typeToString(item.type)]]
+                    <paper-filesize value="[[item.size]]"></paper-filesize>
                 </div>
             </paper-item-body>
-            <paper-icon-button icon="social:share" toggles on-active-changed="_activeChange" active="{{item.is_shared}}"></paper-icon-button>
+            
+            <dom-if if="[[session.user.is_admin]]">
+                <template>
+                    <paper-icon-button icon="social:share" toggles on-active-changed="_activeChange" active="{{item.is_shared}}"></paper-icon-button>
+                </template>
+            </dom-if>
         </paper-icon-item>
 
-        <iron-ajax url="/api/premiumize/file/{{item.pid}}"
+        <iron-ajax url="/api/premiumize/file/[[item.pid]]"
                    method="POST" 
                    content-type="application/json" 
                    handle-as="json" 
@@ -61,8 +72,8 @@
      * @customElement
      * @polymer
      */
-        class SpFileItem extends Polymer.Element {
-            static get is() { return 'sp-file-item'; }
+        class SpFolderItem extends Polymer.Element {
+            static get is() { return 'sp-folder-item'; }
             static get properties() {
                 return {
                     item: {
@@ -70,14 +81,18 @@
                     },
                     isShared: {
                         type: Boolean
+                    },
+                    basePath: {
+                        type: String
+                    },
+                    session: {
+                        type: Object
                     }
                 };
             }
 
             ready() {
                 super.ready();
-                if (!this.item.is_shared)
-                    this.item.is_shared = false;
             }
 
             _typeToString(type) {
@@ -86,13 +101,24 @@
                 }
             }
 
+            _buildUrl(item) {
+                var path = this.basePath + encodeURI(item.url);
+
+                // if (item.type == 'torrent') {
+                //     path += '/';
+                // }
+
+                return path;
+            }
+
             _activeChange(e) {
+                if (!this.item) return;
                 this.isShared = e.detail.value;
                 this.$.updateIsSharedRequest.generateRequest();
             }
         }
 
-        window.customElements.define(SpFileItem.is, SpFileItem);
+        window.customElements.define(SpFolderItem.is, SpFolderItem);
     </script>
 
 </dom-module>

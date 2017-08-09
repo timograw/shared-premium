@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <!-- Iron elements -->
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
@@ -25,7 +26,7 @@
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 
-<link rel="import" href="../../bower_components/pushstate-anchor/pushstate-anchor.html">
+<!-- <link rel="import" href="../../bower_components/pushstate-anchor/pushstate-anchor.html"> -->
 
 <link rel="import" href="../sp-logo/sp-logo.html">
 
@@ -74,12 +75,12 @@
         height: 32px;
       }
 
-      app-header-layout a {
+      a {
         color: black;
         text-decoration: none;
       }
 
-      app-header-layout a:active {
+      a:active {
         color: var(--secondary);
         text-decoration: none;
       }
@@ -129,8 +130,7 @@
     </style>
 
     <app-location route="{{route}}"></app-location>
-    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}">
-    </app-route>
+    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
 
     <iron-ajax id="logoutRequest" url="/api/session" method="DELETE" on-response="_handleLogoutResponse" handle-as="json"></iron-ajax>
@@ -152,21 +152,20 @@
                 <iron-icon icon="icons:dashboard" slot="item-icon"></iron-icon> <span>Dashboard</span>
               </paper-icon-item>
             </a>
-            <a href="/cloud" tabindex="-1">
+            <a href="/files/">
               <paper-icon-item>
-                <iron-icon icon="icons:folder" slot="item-icon"></iron-icon> <span>Cloud</span>
+                <iron-icon icon="icons:folder" slot="item-icon"></iron-icon> <span>Files</span>
               </paper-icon-item>
             </a>
-            <a href="/premiumize" tabindex="-1" hidden={{!session.user.is_admin}}>
-              <paper-icon-item>
-                <iron-icon icon="icons:folder" slot="item-icon"></iron-icon> <span>Premiumize</span>
-              </paper-icon-item>
-            </a>
-            <a href="/users" tabindex="-1" hidden={{!session.user.is_admin}}>
-              <paper-icon-item>
-                <iron-icon icon="social:person" slot="item-icon"></iron-icon> <span>Users</span>
-              </paper-icon-item>
-            </a>
+            <dom-if if="{{session.user.is_admin}}">
+              <template>
+                <a href="/users" tabindex="-1">
+                  <paper-icon-item>
+                    <iron-icon icon="social:person" slot="item-icon"></iron-icon> <span>Users</span>
+                  </paper-icon-item>
+                </a>
+              </template>
+            </dom-if>
             <paper-icon-item on-tap="logout">
               <iron-icon icon="icons:eject" slot="item-icon"></iron-icon> <span>Logout</span>
             </paper-icon-item>
@@ -174,9 +173,7 @@
 
 
           <div class="footer-container">
-
             <shared-premium-usage session="{{session}}"></shared-premium-usage>
-
             <div class="bottom"></div>
           </div>
 
@@ -195,8 +192,7 @@
         <div class="content">
           <iron-pages selected="[[routeData.page]]" attr-for-selected="page" fallback-selection="view404" role="main" selected-item="{{currentPage}}">
             <sp-page-dashboard page="" title="Dashboard" data-path="/elements/sp-pages/sp-page-dashboard.html"></sp-page-dashboard>
-            <sp-page-premiumize page="premiumize" title="Premiumize" data-path="/elements/sp-pages/sp-page-premiumize.html"></sp-page-premiumize>
-            <sp-page-cloud page="cloud" title="Cloud" data-path="/elements/sp-pages/sp-page-cloud.html"></sp-page-cloud>
+            <sp-page-files page="files" title="Files" data-path="/elements/sp-pages/sp-page-files.html" route="[[subroute]]" session="[[session]]"></sp-page-files>
             <sp-page-users page="users" title="Users" data-path="/elements/sp-pages/sp-page-users.html"></sp-page-users>
           </iron-pages>
         </div>
@@ -254,6 +250,10 @@
 
       _handleLogoutResponse() {
         location.reload();
+      }
+
+      stringify(obj) {
+        return JSON.stringify(obj);
       }
     }
 

@@ -1,0 +1,103 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../sp-style/sp-style.html">
+
+<dom-module id="sp-node-breadcrumbs">
+    <template>
+        <style include="sp-style">
+            .label {
+                display: inline-block;
+                vertical-align: middle;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            paper-item.breadcrumbs {
+                /* background: var(--primary-light); */
+                border-bottom: 1px solid #e0e0e0;
+            }
+            ul {
+                padding-left: 10px;
+            }
+            .label > a {
+                text-decoration: none;
+                color: var(--primary);
+            }
+            .label:last-of-type > a {
+                color: var(--plutonium-breadcrumbs-primary-text-color, black);
+            }
+            a[disabled] {
+                pointer-events: none;
+            }
+            li.label:last-of-type iron-icon {
+                display: none !important;
+            }
+        </style>
+
+        <paper-item class="breadcrumbs">
+            <ul>
+                <template is="dom-repeat" items="[[_parsePath(path)]]">
+                    <li class="label">
+                        <a href$="[[basePath]][[item.href]]">[[item.label]]</a>
+                        <iron-icon icon="icons:chevron-right"></iron-icon>
+                    </li>
+                </template>
+            </ul>
+        </paper-item>
+
+    </template>
+
+    <script>
+        /**
+     * @customElement
+     * @polymer
+     */
+        class SpNodeBreadcrumbs extends Polymer.Element {
+            static get is() { return 'sp-node-breadcrumbs'; }
+            static get properties() {
+                return {
+                    path: {
+                        type: String
+                    },
+                    basePath: {
+                        type: String
+                    }
+                };
+            }
+
+            _parsePath(path) {
+                var crumbs = [{
+                    href: "",
+                    label: "Files"
+                }]
+                var tokens = path.split('/');
+                let curPath = ''
+                for (var i = 0; i < tokens.length; i++) {
+                    if (tokens[i]) {
+                        curPath += tokens[i] + '/';
+                        crumbs.push({
+                            href: curPath.replace(new RegExp(" ", "g"), '+')
+        .replace(new RegExp("ä", "g"),'ae')
+        .replace(new RegExp("ö", "g"),'oe')
+        .replace(new RegExp("ü", "g"),'ue')
+        .replace(new RegExp("\\[", "g"), '_')
+        .replace(new RegExp("\\]", "g"), '_'),
+                            label: tokens[i]
+                        });
+                    }
+                }
+
+                console.log(JSON.stringify(crumbs));
+                return crumbs;
+            }
+        }
+
+        window.customElements.define(SpNodeBreadcrumbs.is, SpNodeBreadcrumbs);
+    </script>
+
+</dom-module>

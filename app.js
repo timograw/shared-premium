@@ -6,10 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compression = require('compression');
 var mongoose = require('mongoose');
+var winston = require('winston'),
+    expressWinston = require('express-winston');
 
 var premiumize = require('./api/controllers/premiumize');
-var session = require('./api/controllers/session');
+var sessionController = require('./api/controllers/session');
 var userController = require('./api/controllers/userController');
+var filesController = require('./api/controllers/filesController');
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/shared-premium', {
@@ -17,18 +20,30 @@ mongoose.connect('mongodb://localhost/shared-premium', {
 });
 
 var index = require('./routes/index');
-//var api = require('./routes/api');
 
 var app = express();
 
 app.use(compression());
 
-// view engine setup
+
+
+app.use(expressWinston.logger({
+    transports: [
+      new winston.transports.Console({
+        json: true,
+        colorize: true
+      })
+    ],
+    meta: true, // optional: control whether you want to log the meta data about the request (default to true)
+    msg: "HTTP {{req.method}} {{req.url}}", // optional: customize the default logging message. E.g. "{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}"
+    expressFormat: true, // Use the default Express/morgan request formatting. Enabling this will override any msg if true. Will only output colors with colorize set to true
+    colorize: true // Color the text and status code, using the Express/morgan color palette (text: gray, status: default green, 3XX cyan, 4XX yellow, 5XX red).
+    //ignoreRoute: function (req, res) { return false; } // optional: allows to skip some log messages based on request and/or response
+  }));
+
+  // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 var options = {
   dotfiles: 'ignore',
@@ -51,8 +66,9 @@ app.use('/', express.static(path.join(__dirname, 'client'), options));
 //app.use('/', express.static(path.join(__dirname, 'client/build/default'), options));
 
 app.use('/api/premiumize', premiumize);
-app.use('/api', session);
+app.use('/api', sessionController);
 app.use('/api', userController);
+app.use('/api/files', filesController);
 
 app.get('*', function (req, res) {
   if (req.url.endsWith(".html")) {
@@ -65,10 +81,6 @@ app.get('*', function (req, res) {
   }
 });
 
-// app.use('/', index);
-// app.use('/users', users);
-
-//app.use('/', express.static('./client/build'));
 
 
 // catch 404 and forward to error handler

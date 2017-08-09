@@ -32,7 +32,9 @@
     "iron-lazy-pages": "^2.0.2",
     "iron-a11y-keys-behavior": "^2.0.1",
     "paper-avatar": "NeilujD/paper-avatar#^2.0.1",
-    "paper-chip": "fabbricadigitale/paper-chip#^0.11.0"
+    "paper-chip": "fabbricadigitale/paper-chip#^0.11.0",
+    "paper-spinner": "^2.0.0",
+    "iron-list": "^2.0.8"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",

@@ -14,46 +14,64 @@ let PremiumizeMe = require('../helper/premiumizeme').PremiumizeMe;
 let configuration = require('../helper/premiumizeme.json');
 
 var User = require('../models/userModel');
-var Torrent = require('../models/torrentModel');
+var FileNode = require('../models/fileNodeModel');
 
 let premiumize = new PremiumizeMe(configuration);
 
+let premiumizeHelper = require('./utils/premiumizeHelper');
 
-router.get('/files', asyncMiddleware(async (req, res, next) => {
-    var session = authenticator.authenticate(req, res);
+/**
+ * Get a node by path
+ * @param {string} path 
+ */
+async function getNode(path) {
+    if (path == '/') {
+        return {
+            "type": "folder",
+            "parent": "",
+            "path": "/",
+            "url": "/"
+        }
+    }
+    else {
+        return await FileNode.findOne({"url": path}).lean().exec();
+    };
+}
 
-    var response = await premiumize.listDirectory(null);
 
-    var entries = new LINQ(response.content)
-        .Where(entry => { return (entry.type != 'folder') })
-        .OrderByDescending(function (entry) { return entry.created_at; })
-        .Select(entry => {
-            return {
-                pid: entry.id,
-                name: entry.name,
-                size: entry.size,
-                hash: entry.hash,
-                type: entry.type
-            }
-        }).ToArray();
-    // var entries = response.content
-    //     .filter(entry => entry.type != 'folder')
-    //     .sort((left, right)  => left.name.localeCompare(right.name))
-    //     .map(entry =>  {
-    //                         pid: entry.id,
-    //                         name: entry.name,
-    //                         size: entry.size,
-    //                         hash: entry.hash,
-    //                         type: entry.type
-    //                     });
 
-    var promises = new Array();
-    for (var entry of entries) {
-        promises.push(Torrent.findOneAndUpdate({ "pid": entry.pid }, entry, { upsert: true }).lean().exec());
+router.get('/files*', asyncMiddleware(async (req, res, next) => {
+    var session = await authenticator.authenticate(req, res);
+
+    var path = req.path.substring(6);
+
+    var parentNode = await getNode(path);
+    
+    var children;
+
+    switch(parentNode.type) {
+        case 'folder':
+            children = await premiumizeHelper.loadAndUpdateFolder(path, parentNode);
+            break;
+
+        case 'torrent':
+            children = await premiumizeHelper.loadAndUpdateTorrent(path, parentNode);
+            break;
+
+        default:
+            throw new Error("Unknown parent type");
     }
 
-    var values = await Promise.all(promises);
-    res.json(values);
+
+    if (session.user.is_admin) {
+        parentNode.children = children;
+    }
+    else {
+        parentNode.children = new LINQ(children)
+            .Where(function(c) {return c.type == "dir" || c.type == "file" || c.is_shared;}).ToArray();
+    }
+
+    res.json(parentNode);
 }));
 
 router.post('/file/:id', asyncMiddleware(async (req, res, next) => {
@@ -61,7 +79,7 @@ router.post('/file/:id', asyncMiddleware(async (req, res, next) => {
 
     var pid = req.params.id;
     
-    await Torrent.findOneAndUpdate({"pid": pid}, req.body); //{"is_shared": true}
+    await FileNode.findOneAndUpdate({"pid": pid}, req.body);
 
     res.sendStatus(200);
 }));

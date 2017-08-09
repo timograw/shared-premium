@@ -13,7 +13,7 @@ const asyncMiddleware = fn =>
 var User = require('../models/userModel');
 
 router.get('/users', asyncMiddleware(async (req, res, next) => {
-    var session = await authenticator.authenticate(req, res);
+    var session = await authenticator.authenticate(req, res, true);
 
     // Load users
     var users = await User.find({}).lean().exec();

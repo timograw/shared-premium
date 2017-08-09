@@ -18,8 +18,14 @@
       }
     </style>
 
-    <iron-ajax url="/api/users" method="GET" content-type="application/json" handle-as="json" id="usersRequest" last-response="{{users}}"
-      last-error="{{error}}" auto></iron-ajax>
+    <iron-ajax id="usersRequest"
+               url="/api/users" 
+               method="GET" 
+               content-type="application/json" 
+               handle-as="json"  
+               last-response="{{users}}"
+               last-error="{{error}}"
+               auto></iron-ajax>
 
     <vaadin-grid aria-label="Basic Binding Example" items="[[users]]" hidden="[[!users]]">
 

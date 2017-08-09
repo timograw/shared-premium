@@ -1,0 +1,154 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+
+<link rel="import" href="../../bower_components/paper-avatar/paper-avatar.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../elements/paper-filesize/paper-filesize.html">
+
+<link rel="import" href="../../bower_components/vaadin-grid/vaadin-grid.html">
+
+<link rel="import" href="../sp-style/sp-style.html">
+
+<link rel="import" href="../sp-nodes/sp-folder.html">
+<link rel="import" href="../sp-nodes/sp-torrent.html">
+
+
+<dom-module id="sp-page-files">
+  <template>
+
+    <style include="sp-style">
+      vaadin-grid {
+        height: 100%
+      }
+
+      iron-icon {
+        color: var(--primary);
+      }
+
+      .avatar {
+        display: inline-block;
+        box-sizing: border-box;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--paper-amber-500);
+      }
+
+      .blue {
+        background-color: var(--paper-light-blue-300);
+      }
+
+
+
+      paper-avatar {
+        --paper-avatar-background: var(--secondary);
+      }
+
+      paper-icon-item {
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      paper-spinner-lite {
+        margin: 15px auto;
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      iron-list {
+        /* border: 1px solid #e5e5e5;
+                background: #fff; */
+      }
+
+      paper-card {
+        width: 100%;
+      }
+    </style>
+
+    <app-route route="[[route]]" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+    <iron-ajax url="/api/premiumize/files[[route.path]]" method="GET" content-type="application/json" handle-as="json" id="usersRequest"
+      last-response="{{node}}" last-error="{{error}}" on-response="_onFilesResponse" loading="{{_isLoading}}" auto></iron-ajax>
+
+    <paper-card>
+
+      <template is="dom-if" if="[[_isLoading]]">
+        <div class="center">
+          <paper-spinner-lite active></paper-spinner-lite>
+        </div>
+      </template>
+
+      <template is="dom-if" if="[[!_isLoading]]">
+
+        <template is="dom-if" if="[[_isFolder(node)]]">
+          <sp-folder base-path="/files/" node="[[node]]" session="[[session]]"></sp-folder>
+        </template>
+
+        <template is="dom-if" if="[[_isTorrent(node)]]">
+          <sp-torrent base-path="/files/" node="[[node]]" session="[[session]]"></sp-torrent>
+        </template>
+        
+      </template>
+    </paper-card>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class SpPageFiles extends Polymer.Element {
+      static get is() { return 'sp-page-files'; }
+      static get properties() {
+        return {
+          _filesLoaded: {
+            type: Boolean,
+            value: false
+          },
+          _isLoading: {
+            type: Boolean
+          },
+          session: {
+            type: Object
+          }
+        };
+      }
+
+      _onFilesResponse() {
+        this._filesLoaded = true;
+      }
+
+      _iconForType(type) {
+        if (type == 'folder') {
+          return 'icons:folder'
+        }
+        if (type == 'torrent') {
+          return 'editor:insert-drive-file'
+        }
+        return '?';
+      }
+
+      _isFolder(node) {
+        return node.type == 'folder';
+      }
+
+      _isTorrent(node) {
+        return node.type == 'torrent';
+      }
+
+    }
+
+    window.customElements.define(SpPageFiles.is, SpPageFiles);
+  </script>
+
+</dom-module>

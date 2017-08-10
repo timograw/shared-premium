@@ -34,11 +34,12 @@
     "paper-avatar": "NeilujD/paper-avatar#^2.0.1",
     "paper-chip": "fabbricadigitale/paper-chip#^0.11.0",
     "paper-spinner": "^2.0.0",
-    "iron-list": "^2.0.8"
+    "iron-list": "^2.0.8",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.5",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   },
   "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0"
   },
   "resolutions": {
     "polymer": "^2.0.1",

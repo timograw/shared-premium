@@ -23,12 +23,13 @@
                 <iron-icon icon="icons:folder" slot="item-icon"></iron-icon>
                 <div class="layout horizontal justified" style="width: 100%">
                     <div>[[node.name]]</div>
-                    <!-- <div class="flex"></div> -->
                     <div>
                         <paper-filesize value="[[node.size]]"></paper-filesize>
                     </div>
                 </div>
-                <paper-icon-button icon="icons:archive" alt="Download folder zipped"></paper-icon-button>
+                <a href="http://localhost:3000/api/premiumize/files[[_buildUrl(node)]]" download>
+                    <paper-icon-button icon="icons:archive" alt="Download folder zipped"></paper-icon-button>
+                </a>
             </paper-icon-item>
             <template is="dom-repeat" items="[[node.children]]">
                 <sp-file node="[[item]]" depth="[[_inc(depth)]]"></sp-file>
@@ -45,7 +46,9 @@
                         <paper-filesize value="[[node.size]]"></paper-filesize>
                     </div>
                 </div>
-                <paper-icon-button icon="icons:file-download" alt="Download file"></paper-icon-button>
+                <a href="http://localhost:3000/api/premiumize/files[[_buildUrl(node)]]" download>
+                    <paper-icon-button icon="icons:file-download" alt="Download file"></paper-icon-button>
+                </a>
             </paper-icon-item>
         </template>
 
@@ -86,6 +89,11 @@
 
             _paddingForDepth(depth) {
                 return 16 + depth * 32
+            }
+
+            _buildUrl(item) {
+                var path = encodeURI(item.url);
+                return path;
             }
         }
 

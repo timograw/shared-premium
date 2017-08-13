@@ -82,17 +82,15 @@
                         curPath += tokens[i] + '/';
                         crumbs.push({
                             href: curPath.replace(new RegExp(" ", "g"), '+')
-        .replace(new RegExp("ä", "g"),'ae')
-        .replace(new RegExp("ö", "g"),'oe')
-        .replace(new RegExp("ü", "g"),'ue')
-        .replace(new RegExp("\\[", "g"), '_')
-        .replace(new RegExp("\\]", "g"), '_'),
+                                        .replace(new RegExp("ä", "g"),'ae')
+                                        .replace(new RegExp("ö", "g"),'oe')
+                                        .replace(new RegExp("ü", "g"),'ue')
+                                        .replace(new RegExp("\\[", "g"), '_')
+                                        .replace(new RegExp("\\]", "g"), '_'),
                             label: tokens[i]
                         });
                     }
                 }
-
-                console.log(JSON.stringify(crumbs));
                 return crumbs;
             }
         }

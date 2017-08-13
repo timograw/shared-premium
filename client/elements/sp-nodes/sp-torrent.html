@@ -26,12 +26,9 @@
 
 
         <sp-node-breadcrumbs base-path="[[basePath]]" path="[[node.path]]"></sp-node-breadcrumbs>
-            
-            <!-- <paper-listbox> -->
-                <template is="dom-repeat" items="[[node.children]]">
-                    <sp-file node="[[item]]" depth="0"></sp-file>
-                </template>
-            <!-- </paper-listbox> -->
+            <template is="dom-repeat" items="[[node.children]]">
+                <sp-file node="[[item]]" depth="0" base-path="[[basePath]]"></sp-file>
+            </template>
     </template>
 
     <script>

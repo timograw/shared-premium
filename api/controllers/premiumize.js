@@ -58,6 +58,13 @@ router.get('/files*', asyncMiddleware(async (req, res, next) => {
             children = await premiumizeHelper.loadAndUpdateTorrent(path, parentNode);
             break;
 
+        case 'file':
+            res.writeHead(302, {
+                'Location': parentNode.href
+            });
+            res.end();
+            return;
+
         default:
             throw new Error("Unknown parent type");
     }

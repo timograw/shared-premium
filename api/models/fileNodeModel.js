@@ -31,6 +31,9 @@ var FileNodeSchema = Schema({
     },
     zip: {
         type: String
+    },
+    href: {
+        type: String
     }
 });
 

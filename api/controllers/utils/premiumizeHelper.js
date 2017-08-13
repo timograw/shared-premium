@@ -79,7 +79,7 @@ async function processEntries(path, entries) {
                     "name": entry.name,
                     "size": entry.size ? entry.size : 0,
                     "items": entry.items,
-                    "zip": entry.zip,
+                    "download": entry.zip,
                     "path": path + entry.name + '/',
                     "url": escapePath(path) + escapePath(entry.name) + '/'
                 };
@@ -94,8 +94,9 @@ async function processEntries(path, entries) {
                     "type": "file",
                     "name": entry.name,
                     "size": entry.size ? entry.size : 0,
-                    "path": path + entry.name + '/',
-                    "url": escapePath(path) + escapePath(entry.name) + '/'
+                    "path": path + entry.name,
+                    "download": entry.url,
+                    "url": escapePath(path) + escapePath(entry.name)
                 };
                 file = await FileNode.findOneAndUpdate({ "path": file.path }, file, { upsert: true }).lean().exec();
                 arr.push(file);

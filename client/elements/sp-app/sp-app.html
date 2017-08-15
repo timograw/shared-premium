@@ -26,8 +26,6 @@
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 
-<!-- <link rel="import" href="../../bower_components/pushstate-anchor/pushstate-anchor.html"> -->
-
 <link rel="import" href="../sp-logo/sp-logo.html">
 
 <link rel="import" href="../shared-premium-widgets/shared-premium-usage.html">
@@ -129,8 +127,8 @@
       }
     </style>
 
-    <app-location route="{{route}}"></app-location>
-    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+    <app-location route="{{route}}" url-space-regex="^(?!\/api\/).+"></app-location>
+    <app-route route="[[route]]" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
 
     <iron-ajax id="logoutRequest" url="/api/session" method="DELETE" on-response="_handleLogoutResponse" handle-as="json"></iron-ajax>

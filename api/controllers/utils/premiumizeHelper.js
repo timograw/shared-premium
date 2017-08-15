@@ -26,7 +26,7 @@ function escapePath(path) {
   * @return  Array of file nodes
   */
 exports.loadAndUpdateFolder = async function(path, parentNode) {
-    var pid = (parentNode) ? parentNode.pid : null;
+    var pid = (parentNode && parentNode.pid) ? parentNode.pid : null;
     var response = await premiumize.listDirectory(pid);
 
     var entries = new LINQ(response.content)
@@ -83,7 +83,7 @@ async function processEntries(path, entries) {
                     "path": path + entry.name + '/',
                     "url": escapePath(path) + escapePath(entry.name) + '/'
                 };
-                dir = await FileNode.findOneAndUpdate({ "path": dir.path }, dir, { upsert: true }).lean().exec();
+                dir = await FileNode.findOneAndUpdate({ "path": dir.path }, dir, { upsert: true, new: true }).lean().exec();
                 if (entry.children)
                     dir.children = await processEntries(dir.path, entry.children);
                 arr.push(dir);
@@ -98,7 +98,7 @@ async function processEntries(path, entries) {
                     "download": entry.url,
                     "url": escapePath(path) + escapePath(entry.name)
                 };
-                file = await FileNode.findOneAndUpdate({ "path": file.path }, file, { upsert: true }).lean().exec();
+                file = await FileNode.findOneAndUpdate({ "path": file.path }, file, { upsert: true, new: true }).lean().exec();
                 arr.push(file);
                 break;
 

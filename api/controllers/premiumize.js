@@ -60,7 +60,7 @@ router.get('/files*', asyncMiddleware(async (req, res, next) => {
 
         case 'file':
             res.writeHead(302, {
-                'Location': parentNode.href
+                'Location': parentNode.download
             });
             res.end();
             return;

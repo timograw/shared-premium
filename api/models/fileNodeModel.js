@@ -29,7 +29,7 @@ var FileNodeSchema = Schema({
     url: {
         type: String
     },
-    zip: {
+    download: {
         type: String
     },
     href: {

@@ -32,6 +32,9 @@ var FileNodeSchema = Schema({
     download: {
         type: String
     },
+    contentType: {
+        type: String
+    },
     href: {
         type: String
     }

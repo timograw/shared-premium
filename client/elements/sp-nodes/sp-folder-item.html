@@ -2,6 +2,8 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/device-icons.html">
 
@@ -41,7 +43,7 @@
         </style>
 
         <paper-icon-item>
-            <paper-avatar label="T" mini slot="item-icon"></paper-avatar>
+            <paper-avatar icon="[[_iconForItem(item)]]" mini slot="item-icon"></paper-avatar>
             
             <paper-item-body two-line>
                 <div><a href="[[_buildUrl(item)]]">[[item.name]]</a></div>
@@ -102,19 +104,26 @@
             }
 
             _buildUrl(item) {
-                var path = this.basePath + encodeURI(item.url);
-
-                // if (item.type == 'torrent') {
-                //     path += '/';
-                // }
-
-                return path;
+                return this.basePath + encodeURI(item.url);
             }
 
             _activeChange(e) {
                 if (!this.item) return;
                 this.isShared = e.detail.value;
                 this.$.updateIsSharedRequest.generateRequest();
+            }
+
+            _iconForItem(item) {
+                if (!item || !item.contentType)
+                    return 'icons:folder-open';
+
+                if (item.contentType == 'tv')
+                    return 'hardware:tv';
+
+                if (item.contentType == 'movie')
+                    return 'av:movie';
+
+                return 'icons:folder-open';
             }
         }
 

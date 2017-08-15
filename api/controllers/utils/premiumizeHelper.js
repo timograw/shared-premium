@@ -40,33 +40,39 @@ exports.loadAndUpdateFolder = async function(path, parentNode) {
                 "type": entry.type,
                 "parent": path,
                 "path": path + entry.name + "/",
-                "url": escapePath(path) + escapePath(entry.name) + "/"
+                "url": escapePath(path) + escapePath(entry.name) + "/",
+                contentType: guessContentType(entry)
             }
         }).ToArray();
 
-    // var entries = response.content
-    //     .filter(entry => entry.type != 'folder')
-    //     .sort((left, right)  => left.name.localeCompare(right.name))
-    //     .map(entry =>  {
-    //                         pid: entry.id,
-    //                         name: entry.name,
-    //                         size: entry.size,
-    //                         hash: entry.hash,
-    //                         type: entry.type
-    //                     });
-
     var promises = new Array();
     for (var entry of entries) {
+
         promises.push(FileNode.findOneAndUpdate({ "pid": entry.pid }, entry, { upsert: true }).lean().exec());
     }
 
     return await Promise.all(promises);
 }
 
+var tvNameRegex = /[sS]\d{1,2}[eE]\d{1,2}/;
+var movieRegex = /1080[pP]|720[pP]|[hH][eE][vV][cC]|([xX]|[hH])26[45]|[bB]lu[rR]ay/
+
+function guessContentType(entry) {
+    if (entry.name.match(tvNameRegex))
+        return 'tv';
+
+    if (entry.name.match(movieRegex))
+        return 'movie';
+
+    return null;
+}
+
 exports.loadAndUpdateTorrent = async function(path, parentNode) {
     var response = await premiumize.browseTorrent(parentNode.hash);
 
-    return await processEntries(path, response.content);
+    var children = await processEntries(path, response.content);
+
+    return children;
 }
 
 async function processEntries(path, entries) {
